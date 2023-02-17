@@ -1,18 +1,20 @@
 // Dependencies & Libraries
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 // Layouts
-import Layout from "./layouts/UserLayout";
+import AdminLayout from "./layouts/AdminLayout";
 // Pages
-import Home from "./views/user/Home";
-import Profile from './views/user/Profile';
+import Home from "./views/admin/Home";
+import Profile from "./views/user/Profile";
+// styles
+import "./index.css";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<AdminLayout />}>
           <Route index element={<Home />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
@@ -21,5 +23,5 @@ export default function App() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
