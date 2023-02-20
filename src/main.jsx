@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 // Layouts
 import AdminLayout from "./layouts/AdminLayout";
 // Pages
+import EmployeeCreate from "./views/admin/EmployeeCreate";
 import Home from "./views/admin/Home";
 import Profile from "./views/user/Profile";
 // styles
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AdminLayout />}>
           <Route index element={<Home />} />
+          <Route path="/employee/add" element={<EmployeeCreate />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
