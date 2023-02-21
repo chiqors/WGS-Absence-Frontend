@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
 import employeeModel from "../../models/employeeModel";
@@ -34,6 +35,8 @@ const EmployeeCreate = () => {
     },
   ];
 
+  const navigate = useNavigate();
+
   const handlePhoto = (e) => {
     setPhoto(URL.createObjectURL(e.target.files[0]));
     setFormData({
@@ -51,6 +54,7 @@ const EmployeeCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors([]);
     const formDataSubmit = new FormData();
     formDataSubmit.append("full_name", formData.full_name);
     formDataSubmit.append("job_id", formData.job_id);
@@ -68,17 +72,26 @@ const EmployeeCreate = () => {
     } catch (error) {
       console.log(error);
       setErrors(error.response.data.errors);
+    } finally {
+      console.log("success create employee");
+      navigate("/");
     }
   };
 
+  // useEffect Hooks can be used to perform side effects in function components
+  // it is a combination of componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     const fetchJob = async () => {
       const res = await jobModel.getAllJobs();
       setJobs(res.data);
     };
     fetchJob();
+    // clean up / unmount trigger with useEffect
     return () => {
       setJobs([]);
+      setPhoto(null);
+      setTab(0);
+      setFormData([]);
     };
   }, []);
 
