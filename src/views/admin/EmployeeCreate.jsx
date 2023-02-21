@@ -1,9 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
+import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
+import employeeModel from "../../models/employeeModel";
+import jobModel from "../../models/jobModel";
 
 const EmployeeCreate = () => {
   const [tab, setTab] = useState(0);
   const [photo, setPhoto] = useState(null);
+  const [jobs, setJobs] = useState([]);
+  const [formData, setFormData] = useState({
+    full_name: "",
+    job_id: "",
+    gender: "",
+    phone: "",
+    email: "",
+    address: "",
+    birthdate: "",
+    username: "",
+    password: "",
+    confirm_password: "",
+    photo_url: "",
+  });
+  const [errors, setErrors] = useState([]);
+
   const listMenu = [
     {
       title: "Admin",
@@ -17,11 +36,51 @@ const EmployeeCreate = () => {
 
   const handlePhoto = (e) => {
     setPhoto(URL.createObjectURL(e.target.files[0]));
+    setFormData({
+      ...formData,
+      photo_url: e.target.files[0],
+    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleFormChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formDataSubmit = new FormData();
+    formDataSubmit.append("full_name", formData.full_name);
+    formDataSubmit.append("job_id", formData.job_id);
+    formDataSubmit.append("gender", formData.gender);
+    formDataSubmit.append("phone", formData.phone);
+    formDataSubmit.append("email", formData.email);
+    formDataSubmit.append("address", formData.address);
+    formDataSubmit.append("birthdate", formData.birthdate);
+    formDataSubmit.append("username", formData.username);
+    formDataSubmit.append("password", formData.password);
+    formDataSubmit.append("confirm_password", formData.confirm_password);
+    formDataSubmit.append("photo_url", formData.photo_url);
+    try {
+      await employeeModel.createEmployee(formDataSubmit);
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data.errors);
+    }
+  };
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      const res = await jobModel.getAllJobs();
+      setJobs(res.data);
+    };
+    fetchJob();
+    return () => {
+      setJobs([]);
+    };
+  }, []);
 
   return (
     <>
@@ -30,6 +89,8 @@ const EmployeeCreate = () => {
       </div>
 
       <AdminBreadcrumb items={listMenu} />
+
+      {errors.length > 0 ? <AdminErrorAlert error={errors} /> : null}
 
       <form
         action=""
@@ -44,7 +105,6 @@ const EmployeeCreate = () => {
               tab === 0 ? "tab tab-lifted tab-active" : "tab tab-lifted"
             }
             onClick={() => setTab(0)}
-            value={0}
           >
             Personal
           </a>
@@ -53,7 +113,6 @@ const EmployeeCreate = () => {
               tab === 1 ? "tab tab-lifted tab-active" : "tab tab-lifted"
             }
             onClick={() => setTab(1)}
-            value={1}
           >
             Account
           </a>
@@ -94,20 +153,30 @@ const EmployeeCreate = () => {
                   <input
                     type="text"
                     placeholder="Full Name"
-                    name="fullname"
+                    name="full_name"
+                    onChange={handleFormChange}
+                    value={formData.full_name}
                     className="input input-bordered"
                   />
                 </div>
                 <div className="form-control col-span-1">
                   <label className="label">
                     <span className="label-text">
-                      Role <span className="text-red-500">*</span>
+                      Role / Job <span className="text-red-500">*</span>
                     </span>
                   </label>
-                  <select className="select select-bordered w-full" name="role">
+                  <select
+                    className="select select-bordered w-full"
+                    name="job_id"
+                    onChange={handleFormChange}
+                    value={formData.job_id}
+                  >
                     <option value="">-</option>
-                    <option value="admin">Admin</option>
-                    <option value="employee">Employee</option>
+                    {jobs.map((job) => (
+                      <option key={job.id} value={job.id}>
+                        {job.title}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -118,12 +187,17 @@ const EmployeeCreate = () => {
                       Gender <span className="text-red-500">*</span>
                     </span>
                   </label>
-                  <input
-                    type="text"
-                    placeholder="gender"
+                  <select
                     name="gender"
-                    className="input input-bordered"
-                  />
+                    onChange={handleFormChange}
+                    value={formData.gender}
+                    className="select select-bordered w-full"
+                    id="gender"
+                  >
+                    <option value="">-</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
                 </div>
                 <div className="form-control">
                   <label className="label">
@@ -135,6 +209,8 @@ const EmployeeCreate = () => {
                     type="text"
                     placeholder="Phone"
                     name="phone"
+                    onChange={handleFormChange}
+                    value={formData.phone}
                     className="input input-bordered"
                   />
                 </div>
@@ -148,6 +224,8 @@ const EmployeeCreate = () => {
                     type="email"
                     placeholder="Email"
                     name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
                     className="input input-bordered"
                   />
                 </div>
@@ -163,6 +241,8 @@ const EmployeeCreate = () => {
                     className="textarea h-24 textarea-bordered"
                     placeholder="Address"
                     name="address"
+                    value={formData.address}
+                    onChange={handleFormChange}
                   ></textarea>
                 </div>
                 <div className="form-control">
@@ -174,6 +254,8 @@ const EmployeeCreate = () => {
                   <input
                     type="text"
                     name="birthdate"
+                    value={formData.birthdate}
+                    onChange={handleFormChange}
                     placeholder="Birth Date"
                     className="input input-bordered"
                   />
@@ -188,27 +270,18 @@ const EmployeeCreate = () => {
             </div>
           ) : (
             <div className="card-body py-0">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Email</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    className="input input-bordered"
-                  />
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Username</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    className="input input-bordered"
-                  />
-                </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Username</span>
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleFormChange}
+                  placeholder="Username"
+                  className="input input-bordered"
+                />
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="form-control">
@@ -217,6 +290,9 @@ const EmployeeCreate = () => {
                   </label>
                   <input
                     type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleFormChange}
                     placeholder="Password"
                     className="input input-bordered"
                   />
@@ -227,16 +303,16 @@ const EmployeeCreate = () => {
                   </label>
                   <input
                     type="password"
+                    name="confirm_password"
+                    value={formData.confirm_password}
+                    onChange={handleFormChange}
                     placeholder="Confirm Password"
                     className="input input-bordered"
                   />
                 </div>
               </div>
-              <button
-                className="btn btn-primary mt-5"
-                onClick={() => setTab(0)}
-              >
-                Go to Personal
+              <button className="btn btn-primary mt-5" type="submit">
+                Submit
               </button>
             </div>
           )}

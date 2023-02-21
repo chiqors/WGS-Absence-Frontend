@@ -15,11 +15,19 @@ const getEmployeeById = async (id) => {
 };
 
 const createEmployee = async (data) => {
-  return await axios.post(`${API_URL}/employee`, data);
+  return await axios.post(`${API_URL}/employee`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 const updateEmployee = async (id, data) => {
-  return await axios.put(`${API_URL}/employee/${id}`, data);
+  return await axios.put(`${API_URL}/employee/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 const deleteEmployee = async (id) => {
