@@ -69,12 +69,11 @@ const EmployeeCreate = () => {
     formDataSubmit.append("photo_url", formData.photo_url);
     try {
       await employeeModel.createEmployee(formDataSubmit);
+      console.log("success create employee");
+      navigate("/");
     } catch (error) {
       console.log(error);
       setErrors(error.response.data.errors);
-    } finally {
-      console.log("success create employee");
-      navigate("/");
     }
   };
 

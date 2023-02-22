@@ -73,6 +73,7 @@ const EmployeeRow = (props) => {
 
 const PaginatedEmployee = ({ offset, limit }) => {
   const [employees, setEmployees] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageOffset, setPageOffset] = useState(offset || 0);
   const [pageCount, setPageCount] = useState(0);
 
@@ -97,8 +98,10 @@ const PaginatedEmployee = ({ offset, limit }) => {
   }, [pageOffset]);
 
   const handlePageChange = (event) => {
-    // setCurrentPage(event.target.value);
-    setPageOffset(event.selected);
+    const selectedPage = event.selected + 1;
+    // convert selected page to offset
+    const offset = selectedPage * limit - limit;
+    setPageOffset(offset);
   };
 
   return (
@@ -140,7 +143,7 @@ const PaginatedEmployee = ({ offset, limit }) => {
         }
         hrefAllControls={true}
         onPageChange={handlePageChange}
-        forcePage={pageOffset}
+        forcePage={currentPage - 1}
       />
     </>
   );
