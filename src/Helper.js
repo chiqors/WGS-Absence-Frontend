@@ -18,13 +18,25 @@ const checkIfNumIsMultipleOf = (number, multipleOf) => {
   return number % multipleOf === 0;
 };
 
+const checkIfPhotoFromExternalSource = (photo) => {
+  // check if photo is from external source
+  return photo.includes("http");
+};
+
 const getAssetPath = (asset) => {
   // get asset path
-  return `http://localhost:3000/${asset}`;
+  return `http://localhost:3000${asset}`;
+};
+
+const getBirthdate = (datetime) => {
+  // get birthdate
+  return datetime.split("T")[0];
 };
 
 export default {
   getAgeFromBirthDate,
   checkIfNumIsMultipleOf,
+  checkIfPhotoFromExternalSource,
   getAssetPath,
+  getBirthdate,
 };
