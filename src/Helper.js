@@ -18,7 +18,13 @@ const checkIfNumIsMultipleOf = (number, multipleOf) => {
   return number % multipleOf === 0;
 };
 
+const getAssetPath = (asset) => {
+  // get asset path
+  return `http://localhost:3000/${asset}`;
+};
+
 export default {
   getAgeFromBirthDate,
   checkIfNumIsMultipleOf,
+  getAssetPath,
 };

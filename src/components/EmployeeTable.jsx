@@ -21,7 +21,12 @@ const EmployeeRow = (props) => {
                 <div className="mask mask-squircle w-12 h-12">
                   <LazyLoadImage
                     alt="Avatar Tailwind CSS Component"
-                    src={employee.photo_url}
+                    src={
+                      employee.photo_url.includes("http") ||
+                      employee.photo_url.includes("https")
+                        ? employee.photo_url
+                        : Helper.getAssetPath(employee.photo_url)
+                    }
                   />
                 </div>
               </div>
