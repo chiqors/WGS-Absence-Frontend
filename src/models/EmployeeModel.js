@@ -1,31 +1,42 @@
 import axios from "axios";
-import * as dotenv from "dotenv";
-dotenv.config();
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = import.meta.env.VITE_APP_API_URL;
 
-const getAllEmployees = () => {
-  return axios.get(`${API_URL}/employees`);
+const getAllEmployees = async () => {
+  return await axios.get(`${API_URL}/employee`);
 };
 
-const getEmployeeById = (id) => {
-  return axios.get(`${API_URL}/employees/${id}`);
+const getAllEmployeesByOffsetAndLimit = async (offset, limit) => {
+  return await axios.get(`${API_URL}/employee?offset=${offset}&limit=${limit}`);
 };
 
-const createEmployee = (data) => {
-  return axios.post(`${API_URL}/employees`, data);
+const getEmployeeById = async (id) => {
+  return await axios.get(`${API_URL}/employee/${id}`);
 };
 
-const updateEmployee = (id, data) => {
-  return axios.put(`${API_URL}/employees/${id}`, data);
+const createEmployee = async (data) => {
+  return await axios.post(`${API_URL}/employee`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
-const deleteEmployee = (id) => {
-  return axios.delete(`${API_URL}/employees/${id}`);
+const updateEmployee = async (id, data) => {
+  return await axios.put(`${API_URL}/employee/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const deleteEmployee = async (id) => {
+  return await axios.delete(`${API_URL}/employee/${id}`);
 };
 
 export default {
   getAllEmployees,
+  getAllEmployeesByOffsetAndLimit,
   getEmployeeById,
   createEmployee,
   updateEmployee,
