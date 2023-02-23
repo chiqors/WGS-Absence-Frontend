@@ -83,7 +83,7 @@ const EmployeeCreate = () => {
     try {
       await employeeModel.createEmployee(formDataSubmit);
       console.log("success create employee");
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error) {
       console.log(error);
       setErrors(error.response.data.errors);
