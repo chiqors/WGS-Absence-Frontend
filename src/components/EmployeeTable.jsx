@@ -8,11 +8,11 @@ import EmployeeModel from "../models/EmployeeModel";
 const EmployeeRow = (props) => {
   return (
     <>
-      {props.data.map((employee, index) => (
+      {props.data.map((employee) => (
         <tr key={employee.id}>
           <th>
             <div className="flex items-center space-x-3">
-              <div className="text-sm opacity-50">{index + 1}</div>
+              <div className="text-sm opacity-50">{employee.id}</div>
             </div>
           </th>
           <td>
@@ -109,7 +109,7 @@ const PaginatedEmployee = ({ offset, limit }) => {
       <table className="table w-full">
         <thead>
           <tr>
-            <th>Nomor</th>
+            <th>ID</th>
             <th>Name</th>
             <th>Contact</th>
             <th>Job</th>
@@ -117,7 +117,15 @@ const PaginatedEmployee = ({ offset, limit }) => {
           </tr>
         </thead>
         <tbody>
-          <EmployeeRow data={employees} />
+          {employees.length > 0 ? (
+            <EmployeeRow data={employees} />
+          ) : (
+            <tr>
+              <td colSpan="5" className="text-center">
+                No data available / Loading data...
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
       <ReactPaginate

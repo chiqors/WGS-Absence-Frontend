@@ -62,7 +62,7 @@ const AdminNavbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/admin/">Employee</Link>
+            <Link to="/admin/employee">Employee</Link>
           </li>
           <li>
             <Link to="/admin/attendance">Attendance</Link>

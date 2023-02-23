@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
+import Helper from "../../Helper";
 import employeeModel from "../../models/employeeModel";
 import jobModel from "../../models/jobModel";
 
-const EmployeeCreate = () => {
+const EmployeeEdit = () => {
   const [tab, setTab] = useState(0);
   const [photo, setPhoto] = useState(null);
+  const [photoExternalStatus, setPhotoExternalStatus] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [formData, setFormData] = useState({
     full_name: "",
@@ -18,20 +20,22 @@ const EmployeeCreate = () => {
     address: "",
     birthdate: "",
     username: "",
-    password: "",
+    old_password: "",
+    new_password: "",
     confirm_password: "",
     photo_url: "",
   });
+  const paramsId = useParams().id;
   const [errors, setErrors] = useState([]);
 
   const listMenu = [
     {
-      title: "Admin",
-      href: "/admin/employee",
+      title: "Employee",
+      href: "/admin/employee/",
     },
     {
-      title: "Create Employee",
-      href: "/admin/employee/add",
+      title: "Edit Employee",
+      href: "/admin/employee/edit/" + paramsId,
     },
   ];
 
@@ -68,7 +72,9 @@ const EmployeeCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
+    const getOldEmployee = await employeeModel.getEmployeeById(paramsId);
     const formDataSubmit = new FormData();
+    formDataSubmit.append("id", paramsId);
     formDataSubmit.append("full_name", formData.full_name);
     formDataSubmit.append("job_id", formData.job_id);
     formDataSubmit.append("gender", formData.gender);
@@ -76,14 +82,29 @@ const EmployeeCreate = () => {
     formDataSubmit.append("email", formData.email);
     formDataSubmit.append("address", formData.address);
     formDataSubmit.append("birthdate", formData.birthdate);
-    formDataSubmit.append("username", formData.username);
-    formDataSubmit.append("password", formData.password);
-    formDataSubmit.append("confirm_password", formData.confirm_password);
+    if (
+      formData.username != getOldEmployee.data.username &&
+      formData.username != ""
+    ) {
+      formDataSubmit.append("username", formData.username);
+    }
+    if (formData.old_password != "" && formData.new_password != "") {
+      formDataSubmit.append("old_password", formData.old_password);
+      formDataSubmit.append("new_password", formData.new_password);
+    }
+    if (
+      formData.confirm_password == formData.new_password &&
+      formData.new_password != ""
+    ) {
+      formDataSubmit.append("confirm_password", formData.confirm_password);
+    }
     formDataSubmit.append("photo_url", formData.photo_url);
     try {
-      await employeeModel.createEmployee(formDataSubmit);
-      console.log("success create employee");
-      navigate("/", { replace: true });
+      await employeeModel.updateEmployee(paramsId, formDataSubmit);
+      console.log("success update employee");
+      navigate("/admin/employee", {
+        replace: true,
+      });
     } catch (error) {
       console.log(error);
       setErrors(error.response.data.errors);
@@ -94,24 +115,55 @@ const EmployeeCreate = () => {
   // it is a combination of componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     const fetchJob = async () => {
-      const res = await jobModel.getAllJobs();
-      setJobs(res.data);
+      const resJobs = await jobModel.getAllJobs();
+      const resEmployee = await employeeModel.getEmployeeById(paramsId);
+      setJobs(resJobs.data);
+      setFormData({
+        full_name: resEmployee.data.full_name,
+        job_id: resEmployee.data.job_id,
+        gender: resEmployee.data.gender,
+        phone: resEmployee.data.phone,
+        email: resEmployee.data.email,
+        address: resEmployee.data.address,
+        birthdate: Helper.getBirthdate(resEmployee.data.birthdate),
+        username: resEmployee.data.username,
+        old_password: "",
+        new_password: "",
+        confirm_password: "",
+      });
+      if (Helper.checkIfPhotoFromExternalSource(resEmployee.data.photo_url)) {
+        setFormData((formData) => {
+          return {
+            ...formData,
+            photo_url: resEmployee.data.photo_url,
+          };
+        });
+        setPhoto(resEmployee.data.photo_url);
+        setPhotoExternalStatus(true);
+      } else {
+        setFormData((formData) => {
+          return {
+            ...formData,
+            photo_url: resEmployee.data.photo_url,
+          };
+        });
+        setPhoto(Helper.getAssetPath(resEmployee.data.photo_url));
+      }
     };
     fetchJob();
     // clean up / unmount trigger with useEffect
     return () => {
-      setErrors([]);
       setJobs([]);
       setPhoto(null);
       setTab(0);
-      setFormData([]);
+      setFormData({});
     };
   }, []);
 
   return (
     <>
       <div>
-        <h1 className="mb-5 text-3xl font-bold">Create Employee</h1>
+        <h1 className="mb-5 text-3xl font-bold">Update Employee</h1>
       </div>
 
       <AdminBreadcrumb items={listMenu} />
@@ -151,6 +203,11 @@ const EmployeeCreate = () => {
                   photo
                     ? photo
                     : "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg"
+                }
+                style={
+                  photoExternalStatus
+                    ? { objectFit: "cover", width: "100%", height: "100%" }
+                    : {}
                 }
                 alt="Album"
               />
@@ -227,9 +284,7 @@ const EmployeeCreate = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">
-                      Phone <span className="text-red-500">*</span>
-                    </span>
+                    <span className="label-text">Phone</span>
                   </label>
                   <input
                     type="text"
@@ -242,9 +297,7 @@ const EmployeeCreate = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">
-                      Email <span className="text-red-500">*</span>
-                    </span>
+                    <span className="label-text">Email</span>
                   </label>
                   <input
                     type="email"
@@ -298,8 +351,7 @@ const EmployeeCreate = () => {
             <div className="card-body py-0">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Username</span>{" "}
-                  <span className="text-red-500">*</span>
+                  <span className="label-text">Username</span>
                 </label>
                 <input
                   type="text"
@@ -308,18 +360,18 @@ const EmployeeCreate = () => {
                   onChange={handleFormChange}
                   placeholder="Username"
                   className="input input-bordered"
+                  readOnly
                 />
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-3 gap-6">
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Password</span>{" "}
-                    <span className="text-red-500">*</span>
+                    <span className="label-text">Old Password</span>
                   </label>
                   <input
                     type="password"
-                    name="password"
-                    value={formData.password}
+                    name="old_password"
+                    value={formData.old_password}
                     onChange={handleFormChange}
                     placeholder="Password"
                     className="input input-bordered"
@@ -327,8 +379,20 @@ const EmployeeCreate = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Confirm Password</span>{" "}
-                    <span className="text-red-500">*</span>
+                    <span className="label-text">New Password</span>
+                  </label>
+                  <input
+                    type="password"
+                    name="new_password"
+                    value={formData.new_password}
+                    onChange={handleFormChange}
+                    placeholder="Password"
+                    className="input input-bordered"
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Confirm Password</span>
                   </label>
                   <input
                     type="password"
@@ -351,4 +415,4 @@ const EmployeeCreate = () => {
   );
 };
 
-export default EmployeeCreate;
+export default EmployeeEdit;

@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import EmployeeTable from "../../components/EmployeeTable";
+import AdminInfoAlert from "../../components/ui/AdminInfoAlert";
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -10,11 +11,15 @@ const Home = () => {
     <>
       <h1 className="text-3xl font-bold mb-3">Employee List</h1>
       <Link
-        to="/employee/add"
+        to="/admin/employee/add"
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Add Employee
       </Link>
+
+      {location.state && location.state.msg && (
+        <AdminInfoAlert msg={location.state.msg} />
+      )}
 
       <div className="mt-8 overflow-x-auto w-full">
         <EmployeeTable page={page} limit={limit} />
