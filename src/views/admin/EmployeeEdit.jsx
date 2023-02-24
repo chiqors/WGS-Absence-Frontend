@@ -72,7 +72,6 @@ const EmployeeEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
-    const getOldEmployee = await employeeModel.getEmployeeById(paramsId);
     const formDataSubmit = new FormData();
     formDataSubmit.append("id", paramsId);
     formDataSubmit.append("full_name", formData.full_name);
@@ -89,14 +88,13 @@ const EmployeeEdit = () => {
       formDataSubmit.append("username", formData.username);
     }
     if (formData.old_password != "" && formData.new_password != "") {
-      formDataSubmit.append("old_password", formData.old_password);
-      formDataSubmit.append("new_password", formData.new_password);
-    }
-    if (
-      formData.confirm_password == formData.new_password &&
-      formData.new_password != ""
-    ) {
-      formDataSubmit.append("confirm_password", formData.confirm_password);
+      if (
+        formData.confirm_password == formData.new_password &&
+        formData.new_password != ""
+      ) {
+        formDataSubmit.append("password", formData.password);
+        formDataSubmit.append("confirm_password", formData.confirm_password);
+      }
     }
     formDataSubmit.append("photo_url", formData.photo_url);
     try {
