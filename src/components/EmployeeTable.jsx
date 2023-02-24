@@ -6,6 +6,17 @@ import Helper from "../Helper";
 import EmployeeModel from "../models/EmployeeModel";
 
 const EmployeeRow = (props) => {
+  const handleSubmit = async (e, paramId) => {
+    e.preventDefault();
+    const checkConfirm = confirm("Are you sure to delete this employee?");
+    if (checkConfirm) {
+      const result = await EmployeeModel.deleteEmployee(paramId);
+      if (result) {
+        props.onDelete(paramId);
+      }
+    }
+  };
+
   return (
     <>
       {props.data.map((employee) => (
@@ -62,7 +73,9 @@ const EmployeeRow = (props) => {
               <Link to={`/admin/employee/show/${employee.id}`}>
                 <button className="btn btn-info btn-sm">details</button>
               </Link>
-              <button className="btn btn-error btn-sm">delete</button>
+              <form onSubmit={(e) => handleSubmit(e, employee.id)}>
+                <button className="btn btn-error btn-sm">delete</button>
+              </form>
             </div>
           </th>
         </tr>
@@ -104,6 +117,11 @@ const PaginatedEmployee = ({ offset, limit }) => {
     setPageOffset(offset);
   };
 
+  const handleDelete = (id) => {
+    const newEmployees = employees.filter((employee) => employee.id !== id);
+    setEmployees(newEmployees);
+  };
+
   return (
     <>
       <table className="table w-full">
@@ -118,7 +136,7 @@ const PaginatedEmployee = ({ offset, limit }) => {
         </thead>
         <tbody>
           {employees.length > 0 ? (
-            <EmployeeRow data={employees} />
+            <EmployeeRow data={employees} onDelete={handleDelete} />
           ) : (
             <tr>
               <td colSpan="5" className="text-center">
