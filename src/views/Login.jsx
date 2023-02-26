@@ -16,11 +16,9 @@ const Login = () => {
     // check if user uses Google One Tap or Google Login
     if (response.credential) {
       // Google One Tap
-      console.log("credential", response.credential);
       credential = response.credential;
     } else {
       // Google Login
-      console.log("accessToken", response.access_token);
       accessToken = response.access_token;
     }
     // https://www.googleapis.com/auth/userinfo.email
