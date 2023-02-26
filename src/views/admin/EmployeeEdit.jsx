@@ -72,6 +72,7 @@ const EmployeeEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
+    const getOldEmployee = await employeeModel.getEmployeeById(paramsId);
     const formDataSubmit = new FormData();
     formDataSubmit.append("id", paramsId);
     formDataSubmit.append("full_name", formData.full_name);
@@ -82,7 +83,7 @@ const EmployeeEdit = () => {
     formDataSubmit.append("address", formData.address);
     formDataSubmit.append("birthdate", formData.birthdate);
     if (
-      formData.username != getOldEmployee.data.username &&
+      formData.username != getOldEmployee.data.account.username &&
       formData.username != ""
     ) {
       formDataSubmit.append("username", formData.username);
@@ -118,13 +119,13 @@ const EmployeeEdit = () => {
       setJobs(resJobs.data);
       setFormData({
         full_name: resEmployee.data.full_name,
-        job_id: resEmployee.data.job_id,
+        job_id: resEmployee.data.job.id,
         gender: resEmployee.data.gender,
         phone: resEmployee.data.phone,
-        email: resEmployee.data.email,
+        email: resEmployee.data.account.email,
         address: resEmployee.data.address,
         birthdate: Helper.getBirthdate(resEmployee.data.birthdate),
-        username: resEmployee.data.username,
+        username: resEmployee.data.account.username,
         old_password: "",
         new_password: "",
         confirm_password: "",
@@ -255,7 +256,7 @@ const EmployeeEdit = () => {
                     <option value="">-</option>
                     {jobs.map((job) => (
                       <option key={job.id} value={job.id}>
-                        {job.title}
+                        {job.name}
                       </option>
                     ))}
                   </select>

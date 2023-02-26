@@ -130,24 +130,27 @@ const EmployeeShow = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="active">
-                          <td>2021-08-01 08:00:00</td>
-                          <td>2021-08-01 17:00:00</td>
-                          <td>9 hours</td>
-                          <td>Project 1</td>
-                        </tr>
-                        <tr>
-                          <td>2021-08-02 08:00:00</td>
-                          <td>2021-08-02 17:00:00</td>
-                          <td>9 hours</td>
-                          <td>Project 1</td>
-                        </tr>
-                        <tr>
-                          <td>2021-08-03 08:00:00</td>
-                          <td>2021-08-03 17:00:00</td>
-                          <td>9 hours</td>
-                          <td>Project 1</td>
-                        </tr>
+                        {employee.attendances !== undefined ? (
+                          employee.attendances.map((attendance) => (
+                            <tr>
+                              <td>{attendance.time_in}</td>
+                              <td>{attendance.time_out}</td>
+                              <td>
+                                {Helper.getDurationHours(
+                                  attendance.time_in,
+                                  attendance.time_out
+                                )}
+                              </td>
+                              <td>{attendance.assignment}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="4" className="text-center">
+                              No data available
+                            </td>
+                          </tr>
+                        )}
                       </tbody>
                     </table>
                   </div>

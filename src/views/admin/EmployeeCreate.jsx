@@ -192,15 +192,16 @@ const EmployeeCreate = () => {
                     </span>
                   </label>
                   <select
-                    className="select select-bordered w-full"
                     name="job_id"
                     onChange={handleFormChange}
                     value={formData.job_id}
+                    className="select select-bordered w-full overflow-y-auto"
+                    id="job_id"
                   >
                     <option value="">-</option>
                     {jobs.map((job) => (
-                      <option key={job.id} value={job.id}>
-                        {job.title}
+                      <option key={job.id} value={job.id} className="text-sm">
+                        {job.name}
                       </option>
                     ))}
                   </select>
