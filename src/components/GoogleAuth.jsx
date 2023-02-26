@@ -1,15 +1,14 @@
-import { useGoogleLogin } from "@react-oauth/google";
-import React from "react";
+import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
 
 const GoogleAuth = ({ onSuccess, onFailure }) => {
   const login = useGoogleLogin({
     clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
     onSuccess,
-    onFailure,
-    isSignedIn: true,
-    accessType: "offline",
-    responseType: "code",
-    prompt: "consent",
+    onError: onFailure,
+  });
+  useGoogleOneTapLogin({
+    onSuccess,
+    onError: onFailure,
   });
 
   return (

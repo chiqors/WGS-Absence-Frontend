@@ -11,13 +11,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSuccess = async (response) => {
-    // make API call to authenticate user with Google access token
-    const accessToken = response.access_token;
+    let accessToken = null;
+    let credential = null;
+    // check if user uses Google One Tap or Google Login
+    if (response.credential) {
+      // Google One Tap
+      console.log("credential", response.credential);
+      credential = response.credential;
+    } else {
+      // Google Login
+      console.log("accessToken", response.access_token);
+      accessToken = response.access_token;
+    }
     // https://www.googleapis.com/auth/userinfo.email
     // https://www.googleapis.com/auth/userinfo.profile
     try {
       const res = await axios.post("http://localhost:3000/api/google-oauth", {
         accessToken,
+        credential,
       });
       setSuccess(res.data.message);
       setAuthenticated(true);
