@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminNavbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   return (
     <div className="navbar bg-primary text-primary-content">
       <div className="navbar-start">
@@ -70,9 +78,9 @@ const AdminNavbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to="/admin/logout" className="btn">
+        <button onClick={handleLogout} className="btn btn-ghost">
           Logout
-        </Link>
+        </button>
       </div>
     </div>
   );
