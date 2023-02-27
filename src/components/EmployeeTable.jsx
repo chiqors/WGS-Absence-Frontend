@@ -53,16 +53,24 @@ const EmployeeRow = (props) => {
           <td>
             <div className="flex items-center space-x-3">
               <div>
-                <div className="underline">{employee.email}</div>
+                <div className="underline">{employee.account.email}</div>
                 <div className="text-sm">{employee.phone}</div>
               </div>
             </div>
           </td>
           <td>
-            {employee.duty_name ? employee.duty_name : "No Assignment"}
+            {employee.attendance[0] != null
+              ? employee.attendance[0].duty.status == "not_assigned"
+                ? "Not Assigned"
+                : employee.attendance[0].duty.status == "assigned"
+                ? "Assigned"
+                : employee.attendance[0].duty.status == "need_discussion"
+                ? "Need Discussion"
+                : "Completed"
+              : "No Attendance?"}
             <br />
             <span className="badge badge-ghost badge-sm">
-              {employee.job_title}
+              {employee.job.name ? employee.job.name : "No Job"}
             </span>
           </td>
           <th>

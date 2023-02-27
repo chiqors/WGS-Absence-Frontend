@@ -33,10 +33,20 @@ const getBirthdate = (datetime) => {
   return datetime.split("T")[0];
 };
 
+const getDurationHours = (start_time, end_time) => {
+  // get duration hours
+  const start_time_obj = new Date(start_time);
+  const end_time_obj = new Date(end_time);
+  const duration = end_time_obj - start_time_obj;
+  const duration_hours = duration / 1000 / 60 / 60;
+  return duration_hours;
+};
+
 export default {
   getAgeFromBirthDate,
   checkIfNumIsMultipleOf,
   checkIfPhotoFromExternalSource,
   getAssetPath,
   getBirthdate,
+  getDurationHours,
 };

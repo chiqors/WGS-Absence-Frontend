@@ -9,6 +9,7 @@ import UserLayout from "./layouts/UserLayout";
 // Pages
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
+import EmployeeShow from "./views/admin/EmployeeShow";
 import Home from "./views/admin/Home";
 import TestUpload from "./views/admin/testUpload";
 import Profile from "./views/user/Profile";
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="admin" element={<AdminLayout />}>
             <Route index path="employee" element={<Home />} />
             <Route path="employee/add" element={<EmployeeCreate />} />
+            <Route path="employee/show/:id" element={<EmployeeShow />} />
             <Route path="employee/edit/:id" element={<EmployeeEdit />} />
           </Route>
           <Route path="user" element={<UserLayout />}>
