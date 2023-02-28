@@ -1,12 +1,12 @@
 import { googleLogout } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
+import { removeJwt } from "../../utils/AuthGuard";
 
 const AdminNavbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("user");
+    removeJwt();
     googleLogout();
     navigate("/login");
   };

@@ -10,6 +10,7 @@ specifiers:
   daisyui: ^2.50.1
   dayjs: ^1.11.7
   dotenv: ^16.0.3
+  jwt-decode: ^3.1.2
   postcss: ^8.4.21
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -26,6 +27,7 @@ dependencies:
   daisyui: 2.50.2_gbtt6ss3tbiz4yjtvdr6fbrj44
   dayjs: 1.11.7
   dotenv: 16.0.3
+  jwt-decode: 3.1.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-helmet: 6.1.0_react@18.2.0
@@ -987,6 +989,10 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
     dev: true
+
+  /jwt-decode/3.1.2:
+    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
+    dev: false
 
   /lilconfig/2.0.6:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==}

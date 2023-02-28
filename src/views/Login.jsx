@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleAuth from "../components/GoogleAuth";
 import SimpleAuth from "../components/SimpleAuth";
+import { getJwtDecoded, saveJwt } from "../utils/AuthGuard";
 
 const Login = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -29,10 +30,20 @@ const Login = () => {
         credential,
       });
       setSuccess(res.data.message);
+      saveJwt(res.data.token);
+      const token = getJwtDecoded();
       setAuthenticated(true);
-      setTimeout(() => {
-        navigate("/admin/employee");
-      }, 3000);
+      if (token.role === "admin") {
+        console.log("admin");
+        setTimeout(() => {
+          navigate("/admin/employee");
+        }, 3000);
+      } else {
+        setTimeout(() => {
+          console.log("employee");
+          navigate("/user/profile");
+        }, 3000);
+      }
     } catch (error) {
       setError(error.response.data.message);
       console.log(error);

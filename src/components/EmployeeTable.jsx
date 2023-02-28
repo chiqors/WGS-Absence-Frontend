@@ -132,6 +132,31 @@ const PaginatedEmployee = ({ offset, limit }) => {
 
   return (
     <>
+      <ReactPaginate
+        className="flex justify-center mb-4"
+        previousLabel="<"
+        nextLabel=">"
+        breakLabel="..."
+        pageClassName="page-item"
+        pageLinkClassName="btn btn-outline rounded-none"
+        previousClassName="page-item"
+        previousLinkClassName="btn rounded-none"
+        nextClassName="page-item"
+        nextLinkClassName="btn rounded-none"
+        breakClassName="page-item"
+        breakLinkClassName="btn btn-outline"
+        containerClassName="btn-group"
+        activeLinkClassName="btn-primary"
+        marginPagesDisplayed={0}
+        pageRangeDisplayed={3}
+        pageCount={pageCount}
+        hrefBuilder={(page, pageCount, selected) =>
+          page >= 1 && page <= pageCount ? `?page=${page}` : "#"
+        }
+        hrefAllControls={true}
+        onPageChange={handlePageChange}
+        forcePage={currentPage - 1}
+      />
       <table className="table w-full">
         <thead>
           <tr>
@@ -154,31 +179,6 @@ const PaginatedEmployee = ({ offset, limit }) => {
           )}
         </tbody>
       </table>
-      <ReactPaginate
-        className="flex justify-center mt-8"
-        previousLabel="<"
-        nextLabel=">"
-        breakLabel="..."
-        pageClassName="page-item"
-        pageLinkClassName="btn btn-outline rounded-none"
-        previousClassName="page-item"
-        previousLinkClassName="btn rounded-none"
-        nextClassName="page-item"
-        nextLinkClassName="btn rounded-none"
-        breakClassName="page-item"
-        breakLinkClassName="btn"
-        containerClassName="btn-group"
-        activeLinkClassName="btn-active"
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        hrefBuilder={(page, pageCount, selected) =>
-          page >= 1 && page <= pageCount ? `?page=${page}` : "#"
-        }
-        hrefAllControls={true}
-        onPageChange={handlePageChange}
-        forcePage={currentPage - 1}
-      />
     </>
   );
 };
