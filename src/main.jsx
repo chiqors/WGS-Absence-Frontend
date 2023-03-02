@@ -1,7 +1,7 @@
 // Dependencies & Libraries
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // Utils
 import Protected from "./utils/Protected";
@@ -39,13 +39,14 @@ export default function App() {
           <Route path="user/test" element={<TestUpload />} />
           <Route path="user/profile" element={<Profile />} />
         </Route>
-        <Route path="*" element={<Error404 />} />
+        <Route path="/404" element={<Error404 />} />
+        <Route path="*" element={<Redirect to="/404" />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
 root.render(
   <GoogleOAuthProvider clientId={clientId}>
     <App />

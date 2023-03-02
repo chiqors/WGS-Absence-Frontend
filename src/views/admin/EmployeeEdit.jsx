@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import employeeApi from "../../api/employee";
+import jobApi from "../../api/job";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
 import Helper from "../../Helper";
-import employeeModel from "../../models/employeeModel";
-import jobModel from "../../models/jobModel";
 
 const EmployeeEdit = () => {
   const [tab, setTab] = useState(0);
@@ -72,7 +72,7 @@ const EmployeeEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
-    const getOldEmployee = await employeeModel.getEmployeeById(paramsId);
+    const getOldEmployee = await employeeApi.getEmployeeById(paramsId);
     const formDataSubmit = new FormData();
     formDataSubmit.append("id", paramsId);
     formDataSubmit.append("full_name", formData.full_name);
@@ -99,7 +99,7 @@ const EmployeeEdit = () => {
     }
     formDataSubmit.append("photo_url", formData.photo_url);
     try {
-      await employeeModel.updateEmployee(paramsId, formDataSubmit);
+      await employeeApi.updateEmployee(paramsId, formDataSubmit);
       console.log("success update employee");
       navigate("/admin/employee", {
         replace: true,
@@ -114,8 +114,8 @@ const EmployeeEdit = () => {
   // it is a combination of componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     const fetchJob = async () => {
-      const resJobs = await jobModel.getAllJobs();
-      const resEmployee = await employeeModel.getEmployeeById(paramsId);
+      const resJobs = await jobApi.getAllJobs();
+      const resEmployee = await employeeApi.getEmployeeById(paramsId);
       setJobs(resJobs.data);
       setFormData({
         full_name: resEmployee.data.full_name,

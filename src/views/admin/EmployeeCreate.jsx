@@ -1,9 +1,10 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import employeeApi from "../../api/employee";
+import jobApi from "../../api/job";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
-import employeeModel from "../../models/employeeModel";
-import jobModel from "../../models/jobModel";
 
 const EmployeeCreate = () => {
   const [tab, setTab] = useState(0);
@@ -20,6 +21,7 @@ const EmployeeCreate = () => {
     username: "",
     password: "",
     confirm_password: "",
+    photo_file: "",
     photo_url: "",
   });
   const [errors, setErrors] = useState([]);
@@ -46,7 +48,7 @@ const EmployeeCreate = () => {
         setPhoto(img.src);
         setFormData({
           ...formData,
-          photo_url: e.target.files[0],
+          photo_file: e.target.files[0],
         });
       } else {
         setErrors([
@@ -65,9 +67,90 @@ const EmployeeCreate = () => {
     });
   };
 
+  const formValidation = () => {
+    const errors = [];
+    if (!formData.full_name) {
+      errors.push({
+        msg: "Full name is required",
+      });
+    }
+    if (!formData.job_id) {
+      errors.push({
+        msg: "Job is required",
+      });
+    }
+    if (!formData.gender) {
+      errors.push({
+        msg: "Gender is required",
+      });
+    }
+    if (!formData.phone) {
+      errors.push({
+        msg: "Phone is required",
+      });
+    }
+    if (!formData.email) {
+      errors.push({
+        msg: "Email is required",
+      });
+    }
+    if (!formData.address) {
+      errors.push({
+        msg: "Address is required",
+      });
+    }
+    if (!formData.birthdate) {
+      errors.push({
+        msg: "Birthdate is required",
+      });
+    }
+    if (!formData.username) {
+      errors.push({
+        msg: "Username is required",
+      });
+    }
+    if (!formData.password) {
+      errors.push({
+        msg: "Password is required",
+      });
+    }
+    if (!formData.confirm_password) {
+      errors.push({
+        msg: "Confirm password is required",
+      });
+    }
+    if (formData.password !== formData.confirm_password) {
+      errors.push({
+        msg: "Password and confirm password must be the same",
+      });
+    }
+    if (formData.photo_file && formData.photo_url) {
+      errors.push([
+        {
+          msg: "Please choose either upload photo or input external photo url",
+        },
+      ]);
+    }
+    if (!formData.photo_file && !formData.photo_url) {
+      errors.push([
+        {
+          msg: "Please choose either upload photo or input external photo url",
+        },
+      ]);
+    }
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors([]);
+    if (formValidation().length > 0) {
+      setErrors(formValidation());
+      return;
+    }
+
+    // convert date format to YYYY-MM-DD
+    const birthdate = dayjs(formData.birthdate).format("YYYY-MM-DD");
+
     const formDataSubmit = new FormData();
     formDataSubmit.append("full_name", formData.full_name);
     formDataSubmit.append("job_id", formData.job_id);
@@ -75,13 +158,17 @@ const EmployeeCreate = () => {
     formDataSubmit.append("phone", formData.phone);
     formDataSubmit.append("email", formData.email);
     formDataSubmit.append("address", formData.address);
-    formDataSubmit.append("birthdate", formData.birthdate);
+    formDataSubmit.append("birthdate", birthdate);
     formDataSubmit.append("username", formData.username);
     formDataSubmit.append("password", formData.password);
     formDataSubmit.append("confirm_password", formData.confirm_password);
-    formDataSubmit.append("photo_url", formData.photo_url);
+    if (formData.photo_file) {
+      formDataSubmit.append("photo_file", formData.photo_file);
+    } else {
+      formDataSubmit.append("photo_url", formData.photo_url);
+    }
     try {
-      await employeeModel.createEmployee(formDataSubmit);
+      await employeeApi.createEmployee(formDataSubmit);
       console.log("success create employee");
       navigate("/admin/employee", { replace: true });
     } catch (error) {
@@ -94,7 +181,7 @@ const EmployeeCreate = () => {
   // it is a combination of componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     const fetchJob = async () => {
-      const res = await jobModel.getAllJobs();
+      const res = await jobApi.getAllJobs();
       setJobs(res.data);
     };
     fetchJob();
@@ -160,11 +247,22 @@ const EmployeeCreate = () => {
                 <span>Upload Photo</span>
                 <input
                   type="file"
-                  name="photo_url"
+                  name="photo_file"
                   hidden
                   onChange={handlePhoto}
                 />
               </label>
+            </div>
+            {/* add 2nd input type text if user want to insert photo url instead */}
+            <div className="mt-5">
+              <input
+                type="text"
+                name="photo_url"
+                className="input input-bordered"
+                onChange={handleFormChange}
+                value={formData.photo_url}
+                placeholder="Photo URL (optional)"
+              />
             </div>
           </div>
           {tab === 0 ? (
@@ -244,42 +342,11 @@ const EmployeeCreate = () => {
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">
-                      Email <span className="text-red-500">*</span>
-                    </span>
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleFormChange}
-                    className="input input-bordered"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">
-                      Address <span className="text-red-500">*</span>
-                    </span>
-                  </label>
-                  <textarea
-                    className="textarea h-24 textarea-bordered"
-                    placeholder="Address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleFormChange}
-                  ></textarea>
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">
                       Birthdate <span className="text-red-500">*</span>
                     </span>
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="birthdate"
                     value={formData.birthdate}
                     onChange={handleFormChange}
@@ -287,6 +354,20 @@ const EmployeeCreate = () => {
                     className="input input-bordered"
                   />
                 </div>
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">
+                    Address <span className="text-red-500">*</span>
+                  </span>
+                </label>
+                <textarea
+                  className="textarea h-24 textarea-bordered"
+                  placeholder="Address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleFormChange}
+                ></textarea>
               </div>
               <button
                 className="btn btn-primary mt-5"
@@ -297,19 +378,35 @@ const EmployeeCreate = () => {
             </div>
           ) : (
             <div className="card-body py-0">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Username</span>{" "}
-                  <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleFormChange}
-                  placeholder="Username"
-                  className="input input-bordered"
-                />
+              <div className="grid grid-cols-2 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Email</span>{" "}
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    placeholder="Email"
+                    className="input input-bordered"
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Username</span>{" "}
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleFormChange}
+                    placeholder="Username"
+                    className="input input-bordered"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="form-control">

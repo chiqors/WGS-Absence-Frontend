@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import employeeApi from "../../api/employee";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import Helper from "../../Helper";
-import employeeModel from "../../models/employeeModel";
 
 const EmployeeShow = () => {
   const { id } = useParams();
@@ -23,7 +23,7 @@ const EmployeeShow = () => {
 
   useEffect(() => {
     const fetchEmployee = async () => {
-      const response = await employeeModel.getEmployeeById(id);
+      const response = await employeeApi.getEmployeeById(id);
       setEmployee(response.data);
     };
     fetchEmployee();
@@ -39,7 +39,7 @@ const EmployeeShow = () => {
     if (check) {
       try {
         console.log("delete");
-        // await employeeModel.deleteEmployee(id);
+        // await employeeApi.deleteEmployee(id);
         navigate("/admin/employee");
       } catch (error) {
         console.log(error);

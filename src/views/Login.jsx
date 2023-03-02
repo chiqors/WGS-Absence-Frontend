@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import employeeApi from "../api/employee";
 import GoogleAuth from "../components/GoogleAuth";
 import SimpleAuth from "../components/SimpleAuth";
 import { getJwtDecoded, saveJwt } from "../utils/AuthGuard";
@@ -22,10 +22,8 @@ const Login = () => {
       // Google Login
       accessToken = response.access_token;
     }
-    // https://www.googleapis.com/auth/userinfo.email
-    // https://www.googleapis.com/auth/userinfo.profile
     try {
-      const res = await axios.post("http://localhost:3000/api/google-oauth", {
+      const res = await employeeApi.doGoogleLogin({
         accessToken,
         credential,
       });
@@ -58,13 +56,23 @@ const Login = () => {
   const handleAuth = async (dataForm) => {
     // handle authentication
     try {
-      const res = await axios.post("http://localhost:3000/api/login", dataForm);
-      console.log(res);
-      setAuthenticated(true);
+      const res = await employeeApi.doLogin(dataForm);
       setSuccess(res.data.message);
-      setTimeout(() => {
-        navigate("/admin/employee");
-      }, 3000);
+      saveJwt(res.data.token);
+      const token = getJwtDecoded();
+      console.log(token);
+      setAuthenticated(true);
+      if (token.role === "admin") {
+        console.log("admin");
+        setTimeout(() => {
+          navigate("/admin/employee");
+        }, 3000);
+      } else {
+        setTimeout(() => {
+          console.log("employee");
+          navigate("/user/profile");
+        }, 3000);
+      }
     } catch (error) {
       setError(error.response.data.message);
       console.log(error);
