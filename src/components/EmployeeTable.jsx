@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
+import employeeApi from "../api/employee";
 import Helper from "../Helper";
-import EmployeeModel from "../models/EmployeeModel";
 
 const EmployeeRow = (props) => {
   const handleSubmit = async (e, paramId) => {
     e.preventDefault();
     const checkConfirm = confirm("Are you sure to delete this employee?");
     if (checkConfirm) {
-      const result = await EmployeeModel.deleteEmployee(paramId);
+      const result = await employeeApi.deleteEmployee(paramId);
       if (result) {
         props.onDelete(paramId);
       }
@@ -101,13 +101,12 @@ const PaginatedEmployee = ({ offset, limit }) => {
   useEffect(() => {
     // Fetch data
     const fetchData = async () => {
-      await EmployeeModel.getAllEmployeesByOffsetAndLimit(
-        pageOffset,
-        limit
-      ).then((response) => {
-        setEmployees(response.data.data);
-        setPageCount(response.data.total_pages);
-      });
+      await employeeApi
+        .getAllEmployeesByOffsetAndLimit(pageOffset, limit)
+        .then((response) => {
+          setEmployees(response.data.data);
+          setPageCount(response.data.total_pages);
+        });
     };
     fetchData();
 
