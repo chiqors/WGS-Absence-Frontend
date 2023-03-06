@@ -3,7 +3,7 @@ import { sendMail } from "../../api/mail";
 import EmployeeTable from "../../components/EmployeeTable";
 import AdminInfoAlert from "../../components/ui/AdminInfoAlert";
 
-const Home = () => {
+const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const limit = searchParams.get("limit") || 5;
@@ -47,4 +47,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

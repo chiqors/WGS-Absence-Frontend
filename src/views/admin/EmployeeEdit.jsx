@@ -296,14 +296,16 @@ const EmployeeEdit = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Email</span>
+                    <span className="label-text">
+                      Birthdate <span className="text-red-500">*</span>
+                    </span>
                   </label>
                   <input
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={formData.email}
+                    type="text"
+                    name="birthdate"
+                    value={formData.birthdate}
                     onChange={handleFormChange}
+                    placeholder="Birth Date"
                     className="input input-bordered"
                   />
                 </div>
@@ -323,21 +325,6 @@ const EmployeeEdit = () => {
                     onChange={handleFormChange}
                   ></textarea>
                 </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">
-                      Birthdate <span className="text-red-500">*</span>
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    name="birthdate"
-                    value={formData.birthdate}
-                    onChange={handleFormChange}
-                    placeholder="Birth Date"
-                    className="input input-bordered"
-                  />
-                </div>
               </div>
               <button
                 className="btn btn-primary mt-5"
@@ -348,19 +335,38 @@ const EmployeeEdit = () => {
             </div>
           ) : (
             <div className="card-body py-0">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Username</span>
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleFormChange}
-                  placeholder="Username"
-                  className="input input-bordered"
-                  readOnly
-                />
+              <div className="grid grid-cols-2 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Email</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    className="input input-bordered"
+                    readOnly
+                  />
+                  <label className="label">
+                    <span className="label-text">(WIP)</span>
+                  </label>
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Username</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleFormChange}
+                    placeholder="Username"
+                    className="input input-bordered"
+                    readOnly
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-3 gap-6">
                 <div className="form-control">

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import employeeApi from "../api/employee";
 import GoogleAuth from "../components/GoogleAuth";
 import SimpleAuth from "../components/SimpleAuth";
@@ -10,6 +10,18 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const verified = searchParams.get("verified");
+
+  useEffect(() => {
+    if (verified === "true") {
+      setSuccess("Your email has been verified. You can login now.");
+    }
+    return () => {
+      setSuccess(null);
+    };
+  }, [verified]);
 
   const handleSuccess = async (response) => {
     let accessToken = null;
@@ -60,7 +72,6 @@ const Login = () => {
       setSuccess(res.data.message);
       saveJwt(res.data.token);
       const token = getJwtDecoded();
-      console.log(token);
       setAuthenticated(true);
       if (token.role === "admin") {
         console.log("admin");
@@ -70,7 +81,7 @@ const Login = () => {
       } else {
         setTimeout(() => {
           console.log("employee");
-          navigate("/user/profile");
+          navigate("/user/");
         }, 3000);
       }
     } catch (error) {
