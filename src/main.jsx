@@ -9,15 +9,18 @@ import Redirect from "./utils/Redirect";
 // Layouts
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
-// Pages
+// Admin Pages
+import Dashboard from "./views/admin/Dashboard";
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
 import EmployeeShow from "./views/admin/EmployeeShow";
-import Home from "./views/admin/Home";
+// User Pages
 import TestUpload from "./views/admin/TestUpload";
+import Home from "./views/user/Home";
+import Profile from "./views/user/Profile";
+// Common Pages
 import Error404 from "./views/Error404";
 import Login from "./views/Login";
-import Profile from "./views/user/Profile";
 // styles
 import "./index.css";
 
@@ -30,14 +33,15 @@ export default function App() {
         <Route path="/" element={<Redirect to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route element={<Protected element={<AdminLayout />} role="admin" />}>
-          <Route index path="admin/employee" element={<Home />} />
+          <Route index path="admin/employee" element={<Dashboard />} />
           <Route path="admin/employee/add" element={<EmployeeCreate />} />
           <Route path="admin/employee/show/:id" element={<EmployeeShow />} />
           <Route path="admin/employee/edit/:id" element={<EmployeeEdit />} />
         </Route>
         <Route element={<Protected element={<UserLayout />} role="employee" />}>
-          <Route path="user/test" element={<TestUpload />} />
+          <Route index path="user/" element={<Home />} />
           <Route path="user/profile" element={<Profile />} />
+          <Route path="user/test" element={<TestUpload />} />
         </Route>
         <Route path="/404" element={<Error404 />} />
         <Route path="*" element={<Redirect to="/404" />} />
