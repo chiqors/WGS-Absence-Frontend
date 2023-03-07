@@ -1,8 +1,28 @@
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import employeeApi from "../api/employee";
+import GoogleLink from "../components/GoogleLink";
+import { getJwtDecoded } from "../utils/AuthGuard";
 
 const UserLayout = () => {
   const app_name = import.meta.env.VITE_APP_APP_NAME;
   const navigate = useNavigate();
+  const userData = getJwtDecoded();
+  const [employee, setEmployee] = useState({});
+
+  useEffect(() => {
+    const fetchEmployee = async () => {
+      try {
+        const response = await employeeApi.getEmployeeById(
+          userData.employee_id
+        );
+        setEmployee(response.data);
+      } catch (error) {
+        console.log("Failed to fetch employee", error);
+      }
+    };
+    fetchEmployee();
+  }, [userData.employee_id]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -60,6 +80,8 @@ const UserLayout = () => {
             <li>
               <a onClick={handleLogout}>Logout</a>
             </li>
+            {/* link/unlink oauth account */}
+            <GoogleLink data={employee} />
           </ul>
         </div>
       </div>

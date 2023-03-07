@@ -301,7 +301,7 @@ const EmployeeEdit = () => {
                     </span>
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="birthdate"
                     value={formData.birthdate}
                     onChange={handleFormChange}
@@ -310,21 +310,19 @@ const EmployeeEdit = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">
-                      Address <span className="text-red-500">*</span>
-                    </span>
-                  </label>
-                  <textarea
-                    className="textarea h-24 textarea-bordered"
-                    placeholder="Address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleFormChange}
-                  ></textarea>
-                </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">
+                    Address <span className="text-red-500">*</span>
+                  </span>
+                </label>
+                <textarea
+                  className="textarea h-24 textarea-bordered"
+                  placeholder="Address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleFormChange}
+                ></textarea>
               </div>
               <button
                 className="btn btn-primary mt-5"
