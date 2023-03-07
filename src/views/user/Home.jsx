@@ -2,68 +2,77 @@ import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import attendanceApi from "../../api/attendance";
 import dutyApi from "../../api/duty";
+import employee from "../../api/employee";
 
 const Home = () => {
   const [dutyList, setDutyList] = useState([]);
   const [prevDutyList, setPrevDutyList] = useState([]);
   const [attendanceStatus, setAttendanceStatus] = useState(false);
   const [finishedAttendance, setFinishedAttendance] = useState(false);
+  const [dutyStatus, setDutyStatus] = useState("assigned");
   const [dutyId, setDutyId] = useState(0);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const jobId = 180;
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
   const userData = jwtDecode(token);
 
+  const fetchDutyList = async (job_id) => {
+    const response = await dutyApi.getAllDutyNotAssignedWithJobId(job_id);
+    return response.data;
+  };
+
+  const fetchPrevDutyList = async () => {
+    const response =
+      await attendanceApi.getAllLatestAttendanceWithDutyForEmployeeId(
+        userData.employee_id
+      );
+    return response.data;
+  };
+
+  const fetchAttendanceStatus = async () => {
+    const response = await attendanceApi.isEmployeeClockedIn({
+      employee_id: userData.employee_id,
+    });
+    if (response.data) {
+      setAttendanceStatus(true);
+      if (response.data.time_out) {
+        setFinishedAttendance(true);
+      }
+    }
+  };
+
+  const fetchJobId = async () => {
+    const response = await employee.getEmployeeById(userData.employee_id);
+    return response.data.job_id;
+  };
+
   useEffect(() => {
-    const fetchDutyList = async () => {
-      try {
-        const response = await dutyApi.getAllDutyNotAssignedWithJobId(jobId);
-        setDutyList(response.data);
-      } catch (error) {
-        console.log("Failed to fetch duty list: ", error);
-      }
+    const fetchAllData = async () => {
+      await fetchAttendanceStatus();
+      const jobIdFetch = await fetchJobId();
+      const dutyListFetch = await fetchDutyList(jobIdFetch);
+      setDutyList(dutyListFetch);
+      setDutyId(dutyListFetch[0].id);
+      const prevDutyListFetch = await fetchPrevDutyList();
+      setPrevDutyList(prevDutyListFetch);
     };
 
-    const fetchPrevDutyList = async () => {
-      try {
-        const response =
-          await attendanceApi.getAllLatestAttendanceWithDutyForEmployeeId(
-            userData.employee_id
-          );
-        setPrevDutyList(response.data);
-      } catch (error) {
-        console.log("Failed to fetch duty list: ", error);
-      }
-    };
-
-    const fetchAttendanceStatus = async () => {
-      try {
-        const response = await attendanceApi.isEmployeeClockedIn(
-          userData.employee_id
-        );
-        if (response.data) {
-          setAttendanceStatus(true);
-          if (response.data.time_out) {
-            setFinishedAttendance(true);
-          }
-        }
-      } catch (error) {
-        console.log("Failed to fetch attendance status: ", error);
-        return false;
-      }
-    };
-
-    if (!loading) {
-      fetchDutyList();
-      fetchPrevDutyList();
-      fetchAttendanceStatus();
-      setLoading(true);
+    if (loading) {
+      fetchAllData().then(() => {
+        setLoading(false);
+      });
     }
 
     return () => {
       setDutyList([]);
+      setPrevDutyList([]);
+      setAttendanceStatus(false);
+      setFinishedAttendance(false);
+      setDutyId(0);
+      setError(null);
+      setSuccess(null);
+      setLoading(true);
     };
   }, []);
 
@@ -99,6 +108,7 @@ const Home = () => {
     const payload = {
       employee_id: userData.employee_id,
       time_out: datetime_out,
+      status: dutyStatus,
     };
     try {
       await attendanceApi.checkOut(payload);
@@ -142,7 +152,7 @@ const Home = () => {
                 </div>
               )}
 
-              {loading ? (
+              {!loading ? (
                 <>
                   {!finishedAttendance ? (
                     <>
@@ -157,6 +167,7 @@ const Home = () => {
                               className="select select-bordered w-full max-w-xs"
                               name="duty_id"
                               onChange={handleOnDutyChange}
+                              value={dutyId}
                             >
                               {dutyList.map((duty) => (
                                 <option key={duty.id} value={duty.id}>
@@ -179,6 +190,24 @@ const Home = () => {
                           <p className="mb-3 text-base text-gray-500">
                             You have not clocked out yet today.
                           </p>
+                          {/* select box with duty status */}
+                          <div className="mb-4">
+                            <label className="label">
+                              <span className="label-text">Task Status</span>
+                            </label>
+                            <select
+                              className="select select-bordered"
+                              name="duty_status"
+                              onChange={(e) => setDutyStatus(e.target.value)}
+                              value={dutyStatus}
+                            >
+                              <option value="assigned">Assigned</option>
+                              <option value="need_discussion">
+                                Need Discussion
+                              </option>
+                              <option value="completed">Completed</option>
+                            </select>
+                          </div>
                           <div className="mb-4">
                             <button className="btn btn-primary" type="submit">
                               Clock Out

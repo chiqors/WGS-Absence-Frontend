@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import employeeApi from "../api/employee";
+import authApi from "../api/auth";
 import GoogleAuth from "../components/GoogleAuth";
 import SimpleAuth from "../components/SimpleAuth";
 import { getJwtDecoded, saveJwt } from "../utils/AuthGuard";
@@ -35,7 +35,7 @@ const Login = () => {
       accessToken = response.access_token;
     }
     try {
-      const res = await employeeApi.doGoogleLogin({
+      const res = await authApi.doGoogleLogin({
         accessToken,
         credential,
       });
@@ -51,7 +51,7 @@ const Login = () => {
       } else {
         setTimeout(() => {
           console.log("employee");
-          navigate("/user/profile");
+          navigate("/user/");
         }, 3000);
       }
     } catch (error) {
@@ -68,7 +68,7 @@ const Login = () => {
   const handleAuth = async (dataForm) => {
     // handle authentication
     try {
-      const res = await employeeApi.doLogin(dataForm);
+      const res = await authApi.doLogin(dataForm);
       setSuccess(res.data.message);
       saveJwt(res.data.token);
       const token = getJwtDecoded();
