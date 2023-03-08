@@ -18,6 +18,7 @@ specifiers:
   react-lazy-load-image-component: ^1.5.6
   react-paginate: ^8.1.4
   react-router-dom: ^6.8.1
+  react-to-print: ^2.14.12
   tailwindcss: ^3.2.6
   vite: ^4.1.0
 
@@ -33,6 +34,7 @@ dependencies:
   react-helmet: 6.1.0_react@18.2.0
   react-lazy-load-image-component: 1.5.6_biqbaboplfbrettd7655fr4n2y
   react-paginate: 8.1.4_react@18.2.0
+  react-to-print: 2.14.12_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
   '@types/react': 18.0.28
@@ -1260,6 +1262,17 @@ packages:
       react: ^16.3.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-to-print/2.14.12_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-qFJAwvDFd95Z+FWNqitt+HaB1/z+Zdd0MMrNOPUSus3fG32vqv512yB+HXhQ94J3HKoyqaIg44v0Zfc6xUBqlg==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react/18.2.0:

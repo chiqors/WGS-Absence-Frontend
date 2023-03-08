@@ -11,6 +11,8 @@ const Home = () => {
   const [finishedAttendance, setFinishedAttendance] = useState(false);
   const [dutyStatus, setDutyStatus] = useState("assigned");
   const [dutyId, setDutyId] = useState(0);
+  const [noteIn, setNoteIn] = useState("");
+  const [noteOut, setNoteOut] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,6 +21,13 @@ const Home = () => {
 
   const fetchDutyList = async (job_id) => {
     const response = await dutyApi.getAllDutyNotAssignedWithJobId(job_id);
+    return response.data;
+  };
+
+  const fetchPrevDutyNotCompleted = async (job_id) => {
+    const response = await attendanceApi.getAllDutyNotCompletedWithJobId(
+      job_id
+    );
     return response.data;
   };
 
@@ -47,13 +56,23 @@ const Home = () => {
     return response.data.job_id;
   };
 
+  const fetchCheckIfDutyIsAlreadyAssignedToday = async (duty_id) => {
+    const response = await attendanceApi.isDutyAlreadyAssignedToday(duty_id);
+    return response.data;
+  };
+
   useEffect(() => {
     const fetchAllData = async () => {
       await fetchAttendanceStatus();
       const jobIdFetch = await fetchJobId();
       const dutyListFetch = await fetchDutyList(jobIdFetch);
       setDutyList(dutyListFetch);
-      setDutyId(dutyListFetch[0].id);
+      const prevDutyNotCompletedFetch = await fetchPrevDutyNotCompleted(
+        jobIdFetch
+      );
+      prevDutyNotCompletedFetch.forEach((duty) => {
+        setDutyList((prev) => [...prev, duty.duty]);
+      });
       const prevDutyListFetch = await fetchPrevDutyList();
       setPrevDutyList(prevDutyListFetch);
     };
@@ -85,18 +104,25 @@ const Home = () => {
     console.log("clock in");
 
     const datetime_in = new Date().toISOString();
-    const payload = {
-      employee_id: userData.employee_id,
-      duty_id: dutyId,
-      time_in: datetime_in,
-    };
-    try {
-      await attendanceApi.checkIn(payload);
-      setAttendanceStatus(true);
-      setSuccess("Clock in success, you may continue your work");
-    } catch (error) {
-      setError(error.message);
-      console.log("Failed to clock in: ", error);
+    const isDutyAlreadyAssignedToday =
+      await fetchCheckIfDutyIsAlreadyAssignedToday(dutyId);
+    if (!isDutyAlreadyAssignedToday) {
+      const payload = {
+        employee_id: userData.employee_id,
+        duty_id: dutyId,
+        time_in: datetime_in,
+        note_in: noteIn,
+      };
+      try {
+        await attendanceApi.checkIn(payload);
+        setAttendanceStatus(true);
+        setSuccess("Clock in success, you may continue your work");
+      } catch (error) {
+        setError(error.message);
+        console.log("Failed to clock in: ", error);
+      }
+    } else {
+      setError("Someone has already been assigned to this duty today");
     }
   };
 
@@ -109,13 +135,12 @@ const Home = () => {
       employee_id: userData.employee_id,
       time_out: datetime_out,
       status: dutyStatus,
+      note_out: noteOut,
     };
     try {
       await attendanceApi.checkOut(payload);
       setFinishedAttendance(true);
-      setSuccess(
-        "Clock out success, you may take a break for today. Don't forget to clock in tomorrow!"
-      );
+      setSuccess("Clock out success, you may take a break for today");
     } catch (error) {
       setError(error.message);
       console.log("Failed to clock out: ", error);
@@ -169,12 +194,25 @@ const Home = () => {
                               onChange={handleOnDutyChange}
                               value={dutyId}
                             >
+                              <option value="">-- Select Duty --</option>
                               {dutyList.map((duty) => (
                                 <option key={duty.id} value={duty.id}>
                                   {duty.name}
                                 </option>
                               ))}
                             </select>
+                          </div>
+                          <div className="form-control">
+                            <label className="label">
+                              <span className="label-text">Note In</span>
+                            </label>
+                            <textarea
+                              className="textarea h-24 textarea-bordered"
+                              placeholder="Note In"
+                              name="note_in"
+                              onChange={(e) => setNoteIn(e.target.value)}
+                              value={noteIn}
+                            ></textarea>
                           </div>
                           <p className="mb-3 text-base text-gray-500">
                             You have not clocked in yet today.
@@ -192,21 +230,35 @@ const Home = () => {
                           </p>
                           {/* select box with duty status */}
                           <div className="mb-4">
-                            <label className="label">
-                              <span className="label-text">Task Status</span>
-                            </label>
-                            <select
-                              className="select select-bordered"
-                              name="duty_status"
-                              onChange={(e) => setDutyStatus(e.target.value)}
-                              value={dutyStatus}
-                            >
-                              <option value="assigned">Assigned</option>
-                              <option value="need_discussion">
-                                Need Discussion
-                              </option>
-                              <option value="completed">Completed</option>
-                            </select>
+                            <div className="form-control">
+                              <label className="label">
+                                <span className="label-text">Task Status</span>
+                              </label>
+                              <select
+                                className="select select-bordered"
+                                name="duty_status"
+                                onChange={(e) => setDutyStatus(e.target.value)}
+                                value={dutyStatus}
+                              >
+                                <option value="assigned">Assigned</option>
+                                <option value="need_discussion">
+                                  Need Discussion
+                                </option>
+                                <option value="completed">Completed</option>
+                              </select>
+                            </div>
+                            <div className="form-control">
+                              <label className="label">
+                                <span className="label-text">Note Out</span>
+                              </label>
+                              <textarea
+                                className="textarea h-24 textarea-bordered"
+                                placeholder="Note Out"
+                                name="note_out"
+                                onChange={(e) => setNoteOut(e.target.value)}
+                                value={noteOut}
+                              ></textarea>
+                            </div>
                           </div>
                           <div className="mb-4">
                             <button className="btn btn-primary" type="submit">
