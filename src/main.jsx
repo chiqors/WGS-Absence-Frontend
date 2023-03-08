@@ -10,6 +10,8 @@ import Redirect from "./utils/Redirect";
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
 // Admin Pages
+import Attendance from "./views/admin/Attendance";
+import AttendanceShow from "./views/admin/AttendanceShow";
 import Dashboard from "./views/admin/Dashboard";
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
@@ -37,6 +39,8 @@ export default function App() {
           <Route path="admin/employee/add" element={<EmployeeCreate />} />
           <Route path="admin/employee/show/:id" element={<EmployeeShow />} />
           <Route path="admin/employee/edit/:id" element={<EmployeeEdit />} />
+          <Route path="admin/attendance" element={<Attendance />} />
+          <Route path="admin/attendance/:date" element={<AttendanceShow />} />
         </Route>
         <Route element={<Protected element={<UserLayout />} role="employee" />}>
           <Route index path="user/" element={<Home />} />

@@ -7,6 +7,7 @@ import Helper from "../../Helper";
 const EmployeeShow = () => {
   const { id } = useParams();
   const [tab, setTab] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [employee, setEmployee] = useState({});
   const navigate = useNavigate();
 
@@ -21,13 +22,18 @@ const EmployeeShow = () => {
     },
   ];
 
+  const fetchEmployee = async () => {
+    const response = await employeeApi.getEmployeeById(id);
+    return response.data;
+  };
+
   useEffect(() => {
-    const fetchEmployee = async () => {
-      const response = await employeeApi.getEmployeeById(id);
-      setEmployee(response.data);
-    };
-    fetchEmployee();
-  }, [id]);
+    fetchEmployee().then((data) => {
+      setEmployee(data);
+      setLoading(false);
+      console.log(data);
+    });
+  }, []);
 
   const handleTab = (index) => {
     setTab(index);
@@ -130,9 +136,9 @@ const EmployeeShow = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {employee.attendances !== undefined ? (
-                          employee.attendances.map((attendance) => (
-                            <tr>
+                        {employee.attendance !== undefined ? (
+                          employee.attendance.map((attendance) => (
+                            <tr key={attendance.id}>
                               <td>{attendance.time_in}</td>
                               <td>{attendance.time_out}</td>
                               <td>
