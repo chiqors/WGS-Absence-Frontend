@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import employeeApi from "../../api/employee";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
-import Helper from "../../Helper";
+import helper from "../../helpers";
 
 const EmployeeShow = () => {
   const { id } = useParams();
@@ -103,7 +103,7 @@ const EmployeeShow = () => {
                     <p className="text-gray-500">{employee.phone}</p>
                     <p className="text-gray-500">{employee.address}</p>
                     <p className="text-gray-500">
-                      Age {Helper.getAgeFromBirthDate(employee.birthdate)}th
+                      Age {helper.getAgeFromBirthDate(employee.birthdate)}th
                       year | {employee.birthdate}
                     </p>
                     <p className="text-gray-500">{employee.gender}</p>
@@ -142,7 +142,7 @@ const EmployeeShow = () => {
                               <td>{attendance.time_in}</td>
                               <td>{attendance.time_out}</td>
                               <td>
-                                {Helper.getDurationHours(
+                                {helper.getDurationHours(
                                   attendance.time_in,
                                   attendance.time_out
                                 )}

@@ -1,6 +1,9 @@
 import axios from "axios";
+import { BACKEND_API_PATH, BACKEND_URL } from "../config";
 
-const API_URL = import.meta.env.VITE_APP_API_URL;
+const API_URL = `${BACKEND_URL + BACKEND_API_PATH}`;
+// ngrok-skip-browser-warning is a custom header to skip the ngrok browser warning
+axios.defaults.headers.common["ngrok-skip-browser-warning"] = "any value";
 
 const getAllLatestAttendanceWithDutyForEmployeeId = (employeeId) => {
   return axios.get(`${API_URL}/attendance/prevlist/employee/${employeeId}`);

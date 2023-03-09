@@ -240,6 +240,7 @@ const Home = () => {
                                 onChange={(e) => setDutyStatus(e.target.value)}
                                 value={dutyStatus}
                               >
+                                <option value="">-- Select Status --</option>
                                 <option value="assigned">Assigned</option>
                                 <option value="need_discussion">
                                   Need Discussion

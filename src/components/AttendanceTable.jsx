@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import attendanceApi from "../api/attendance";
-import Helper from "../Helper";
+import helper from "../helpers";
 import CircleLoading from "./ui/CircleLoading";
 
 const AttendanceRow = ({ attendances, totalEmployees }) => {
@@ -85,7 +85,7 @@ const PaginatedAttendance = ({ week }) => {
       {/* span: this week, last week */}
       <span className="text-sm text-gray-500">
         Showing attendance for
-        <span className="font-bold"> {Helper.getCurrentWeeks(pageWeek)}</span>
+        <span className="font-bold"> {helper.getCurrentWeeks(pageWeek)}</span>
       </span>
       <table className="table-auto w-auto">
         <thead>

@@ -4,7 +4,7 @@ import employeeApi from "../../api/employee";
 import jobApi from "../../api/job";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
-import Helper from "../../Helper";
+import helper from "../../helpers";
 
 const EmployeeEdit = () => {
   const [tab, setTab] = useState(0);
@@ -124,13 +124,13 @@ const EmployeeEdit = () => {
         phone: resEmployee.data.phone,
         email: resEmployee.data.account.email,
         address: resEmployee.data.address,
-        birthdate: Helper.getBirthdate(resEmployee.data.birthdate),
+        birthdate: helper.getBirthdate(resEmployee.data.birthdate),
         username: resEmployee.data.account.username,
         old_password: "",
         new_password: "",
         confirm_password: "",
       });
-      if (Helper.checkIfPhotoFromExternalSource(resEmployee.data.photo_url)) {
+      if (helper.checkIfPhotoFromExternalSource(resEmployee.data.photo_url)) {
         setFormData((formData) => {
           return {
             ...formData,
@@ -146,7 +146,7 @@ const EmployeeEdit = () => {
             photo_url: resEmployee.data.photo_url,
           };
         });
-        setPhoto(Helper.getAssetPath(resEmployee.data.photo_url));
+        setPhoto(helper.getAssetPath(resEmployee.data.photo_url));
       }
     };
     fetchJob();

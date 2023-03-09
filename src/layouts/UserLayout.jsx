@@ -5,7 +5,7 @@ import GoogleLink from "../components/GoogleLink";
 import { getJwtDecoded } from "../utils/AuthGuard";
 
 const UserLayout = () => {
-  const app_name = import.meta.env.VITE_APP_APP_NAME;
+  const app_name = import.meta.env.VITE_APP_NAME;
   const navigate = useNavigate();
   const userData = getJwtDecoded();
   const [employee, setEmployee] = useState({});
