@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { BACKEND_URL } from "./config";
 
 const getAgeFromBirthDate = (birthDate) => {
   // get age from birthdate
@@ -17,10 +18,12 @@ const checkIfPhotoFromExternalSource = (photo) => {
 
 const getAssetPath = (asset) => {
   // get asset path
-  checkIfPhotoFromExternalSource(asset)
-    ? (asset = asset)
-    : (asset = import.meta.env.VITE_APP_BACKEND_URL + asset);
-  return asset;
+  const checkAsset = checkIfPhotoFromExternalSource(asset);
+  if (checkAsset) {
+    return asset;
+  } else {
+    return `${BACKEND_URL + asset}`;
+  }
 };
 
 const getBirthdate = (datetime) => {

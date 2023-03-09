@@ -5,7 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import attendanceApi from "../../api/attendance";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import CircleLoading from "../../components/ui/CircleLoading";
-import Helper from "../../Helper";
+import helper from "../../helpers";
 
 const AttendanceShow = () => {
   const { date } = useParams();
@@ -59,7 +59,7 @@ const AttendanceShow = () => {
       </div>
 
       <p className="text-xl mb-3 flex flex-col items-center">
-        Date: {Helper.getHumanReadableDate(date)}
+        Date: {helper.getHumanReadableDate(date)}
       </p>
 
       <div className="flex flex-col items-center">
@@ -93,7 +93,7 @@ const AttendanceShow = () => {
                         <div className="flex items-center space-x-3">
                           <LazyLoadImage
                             className="w-10 h-10 rounded-full"
-                            src={Helper.getAssetPath(
+                            src={helper.getAssetPath(
                               attendance.employee.photo_url
                             )}
                             alt={attendance.employee.full_name}
@@ -138,12 +138,12 @@ const AttendanceShow = () => {
                         )}
                       </td>
                       <td className="border px-4 py-2">
-                        {Helper.getDurationHours(
+                        {helper.getDurationHours(
                           attendance.time_in,
                           attendance.time_out
                         )}
                         <br />
-                        {Helper.getHumanWorkingHours(
+                        {helper.getHumanWorkingHours(
                           attendance.time_in,
                           attendance.time_out
                         )}

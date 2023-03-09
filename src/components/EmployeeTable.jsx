@@ -3,7 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import employeeApi from "../api/employee";
-import Helper from "../Helper";
+import helper from "../helpers";
 
 const EmployeeRow = (props) => {
   const handleSubmit = async (e, paramId) => {
@@ -36,7 +36,7 @@ const EmployeeRow = (props) => {
                       employee.photo_url.includes("http") ||
                       employee.photo_url.includes("https")
                         ? employee.photo_url
-                        : Helper.getAssetPath(employee.photo_url)
+                        : helper.getAssetPath(employee.photo_url)
                     }
                   />
                 </div>
@@ -45,7 +45,7 @@ const EmployeeRow = (props) => {
                 <div className="font-bold">{employee.full_name}</div>
                 <div className="text-sm opacity-50">
                   {employee.gender} (
-                  {Helper.getAgeFromBirthDate(employee.birthdate)}th y/o)
+                  {helper.getAgeFromBirthDate(employee.birthdate)}th y/o)
                 </div>
               </div>
             </div>
