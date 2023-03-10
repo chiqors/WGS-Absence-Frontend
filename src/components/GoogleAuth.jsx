@@ -3,7 +3,6 @@ import GoogleIcon from "./svg/GoogleIcon";
 
 const GoogleAuth = ({ onSuccess, onFailure }) => {
   const login = useGoogleLogin({
-    clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
     onSuccess,
     onError: onFailure,
   });

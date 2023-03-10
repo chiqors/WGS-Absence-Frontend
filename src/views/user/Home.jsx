@@ -116,6 +116,9 @@ const Home = () => {
       try {
         await attendanceApi.checkIn(payload);
         setAttendanceStatus(true);
+        setTimeout(() => {
+          setLoading(true);
+        }, 5000);
         setSuccess("Clock in success, you may continue your work");
       } catch (error) {
         setError(error.message);

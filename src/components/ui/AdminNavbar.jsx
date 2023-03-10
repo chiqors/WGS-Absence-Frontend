@@ -41,6 +41,9 @@ const AdminNavbar = () => {
             <li>
               <Link to="/admin/attendance">Attendance</Link>
             </li>
+            <li>
+              <Link to="/admin/job">Job</Link>
+            </li>
           </ul>
         </div>
         <a className="btn btn-ghost normal-case text-xl">
@@ -54,6 +57,9 @@ const AdminNavbar = () => {
           </li>
           <li>
             <Link to="/admin/attendance">Attendance</Link>
+          </li>
+          <li>
+            <Link to="/admin/job">Job</Link>
           </li>
         </ul>
       </div>
