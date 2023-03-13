@@ -3,7 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import employeeApi from "../api/employee";
-import helper from "../helpers";
+import helper from "../helper.js";
 
 const EmployeeRow = (props) => {
   const handleSubmit = async (e, paramId) => {

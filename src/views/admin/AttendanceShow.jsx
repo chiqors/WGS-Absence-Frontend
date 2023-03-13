@@ -5,7 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import attendanceApi from "../../api/attendance";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import CircleLoading from "../../components/ui/CircleLoading";
-import helper from "../../helpers";
+import helper from "../../helper.js";
 
 const AttendanceShow = () => {
   const { date } = useParams();

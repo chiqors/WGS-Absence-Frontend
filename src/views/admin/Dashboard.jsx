@@ -10,10 +10,10 @@ const Dashboard = () => {
     <>
       <h1 className="text-3xl font-bold mb-3">Employee List</h1>
       <Link
-        to="/admin/employee/add"
+        to="/admin/employee/create"
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        Add Employee
+        Create Employee
       </Link>
 
       <div className="mt-8 overflow-x-auto w-full">

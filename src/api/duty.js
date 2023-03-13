@@ -9,6 +9,21 @@ const getAllDutyNotAssignedWithJobId = (jobId) => {
   return axios.get(`${API_URL}/duty/getAllDutyNotAssignedWithJobId/${jobId}`);
 };
 
+const getDutyById = (id) => {
+  return axios.get(`${API_URL}/duty/${id}`);
+};
+
+const createDuty = (data) => {
+  return axios.post(`${API_URL}/duty`, data);
+};
+
+const updateDuty = (data, id) => {
+  return axios.put(`${API_URL}/duty/${id}`, data);
+};
+
 export default {
   getAllDutyNotAssignedWithJobId,
+  getDutyById,
+  createDuty,
+  updateDuty,
 };

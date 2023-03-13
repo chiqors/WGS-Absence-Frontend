@@ -4,7 +4,7 @@ import employeeApi from "../../api/employee";
 import jobApi from "../../api/job";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
-import helper from "../../helpers";
+import helper from "../../helper.js";
 
 const EmployeeEdit = () => {
   const [tab, setTab] = useState(0);
