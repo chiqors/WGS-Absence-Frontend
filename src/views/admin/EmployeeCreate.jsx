@@ -37,7 +37,7 @@ const EmployeeCreate = () => {
     },
     {
       title: "Create Employee",
-      href: "/admin/employee/add",
+      href: "/admin/employee/create",
     },
   ];
 

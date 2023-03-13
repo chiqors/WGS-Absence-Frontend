@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import employeeApi from "../../api/employee";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
-import helper from "../../helpers";
+import helper from "../../helper.js";
 
 const EmployeeShow = () => {
   const { id } = useParams();

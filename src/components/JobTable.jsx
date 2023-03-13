@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import jobApi from "../api/job";
-import helper from "../helpers";
+import helper from "../helper.js";
 import CircleLoading from "./ui/CircleLoading";
 
 const JobRow = ({ data }) => {
@@ -12,7 +12,7 @@ const JobRow = ({ data }) => {
         <tr key={job.id}>
           <td>{job.id}</td>
           <td>{job.name}</td>
-          <td>{job.description}</td>
+          <td>{helper.truncateString(job.description, 50)}</td>
           <td>
             <span className="badge badge-info">{job.duty.length}</span> Tasks
             <br />
@@ -24,13 +24,16 @@ const JobRow = ({ data }) => {
           <td>{helper.getHumanReadableDate(job.created_at)}</td>
           <td>
             <Link
+              to={`/admin/job/show/${job.id}`}
+              className="btn btn-info btn-sm mr-2"
+            >
+              Details
+            </Link>
+            <Link
               to={`/admin/job/edit/${job.id}`}
-              className="btn btn-warning mr-2 btn-sm"
+              className="btn btn-warning btn-sm"
             >
               Edit
-            </Link>
-            <Link to={`/admin/job/${job.id}`} className="btn btn-info btn-sm">
-              Details
             </Link>
           </td>
         </tr>

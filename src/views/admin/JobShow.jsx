@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import jobApi from "../../api/job";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import CircleLoading from "../../components/ui/CircleLoading";
-import helper from "../../helpers";
+import helper from "../../helper.js";
 
 const JobShow = () => {
   const [job, setJob] = useState(null);
@@ -16,7 +16,7 @@ const JobShow = () => {
     },
     {
       title: "Job Detail",
-      href: `/admin/job/${id}`,
+      href: `/admin/job/show/${id}`,
     },
   ];
 
@@ -77,7 +77,7 @@ const JobShow = () => {
                     </div>
                   </div>
                   <Link
-                    to={`/admin/duty/create`}
+                    to={`/admin/job/show/${id}/duty/create`}
                     className="btn btn-primary mt-3"
                   >
                     Create Duty
@@ -133,13 +133,13 @@ const JobShow = () => {
                         )}
                         <td className="border px-4 py-2">
                           <Link
-                            to={`/admin/duty/edit/${duty.id}`}
+                            to={`/admin/job/show/${id}/duty/edit/${duty.id}`}
                             className="btn btn-sm btn-warning mr-2"
                           >
                             Edit
                           </Link>
                           <Link
-                            to={`/admin/duty/show/${duty.id}`}
+                            to={`/admin/job/show/${id}/duty/show/${duty.id}`}
                             className="btn btn-sm btn-primary"
                           >
                             Detail

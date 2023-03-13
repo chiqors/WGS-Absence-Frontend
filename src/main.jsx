@@ -14,10 +14,14 @@ import UserLayout from "./layouts/UserLayout";
 import Attendance from "./views/admin/Attendance";
 import AttendanceShow from "./views/admin/AttendanceShow";
 import Dashboard from "./views/admin/Dashboard";
+import DutyCreate from "./views/admin/DutyCreate.jsx";
+import DutyEdit from "./views/admin/DutyEdit.jsx";
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
 import EmployeeShow from "./views/admin/EmployeeShow";
 import Job from "./views/admin/Job";
+import JobCreate from "./views/admin/JobCreate.jsx";
+import JobEdit from "./views/admin/JobEdit.jsx";
 import JobShow from "./views/admin/JobShow.jsx";
 // User Pages
 import TestUpload from "./views/admin/TestUpload";
@@ -39,13 +43,23 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<Protected element={<AdminLayout />} role="admin" />}>
           <Route index path="admin/employee" element={<Dashboard />} />
-          <Route path="admin/employee/add" element={<EmployeeCreate />} />
+          <Route path="admin/employee/create" element={<EmployeeCreate />} />
           <Route path="admin/employee/show/:id" element={<EmployeeShow />} />
           <Route path="admin/employee/edit/:id" element={<EmployeeEdit />} />
           <Route path="admin/attendance" element={<Attendance />} />
           <Route path="admin/attendance/:date" element={<AttendanceShow />} />
           <Route path="admin/job" element={<Job />} />
-          <Route path="admin/job/:id" element={<JobShow />} />
+          <Route path="admin/job/create" element={<JobCreate />} />
+          <Route path="admin/job/show/:id" element={<JobShow />} />
+          <Route path="admin/job/edit/:id" element={<JobEdit />} />
+          <Route
+            path="admin/job/show/:id/duty/create"
+            element={<DutyCreate />}
+          />
+          <Route
+            path="admin/job/show/:id/duty/edit/:dutyId"
+            element={<DutyEdit />}
+          />
         </Route>
         <Route element={<Protected element={<UserLayout />} role="employee" />}>
           <Route index path="user/" element={<Home />} />
