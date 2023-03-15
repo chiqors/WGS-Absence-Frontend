@@ -106,29 +106,31 @@ const PaginatedJob = ({ page, limit }) => {
           forcePage={currentPage - 1}
         />
       </div>
-      <table className="table table-striped table-hover w-full">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Active Duty</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobs.length > 0 ? (
-            <JobRow data={jobs} />
-          ) : (
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="table table-striped table-hover w-full">
+          <thead>
             <tr>
-              <td colSpan="6">
-                <CircleLoading data="Jobs" />
-              </td>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Active Duty</th>
+              <th>Created At</th>
+              <th>Actions</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {jobs.length > 0 ? (
+              <JobRow data={jobs} />
+            ) : (
+              <tr>
+                <td colSpan="6">
+                  <CircleLoading data="Jobs" />
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

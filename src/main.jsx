@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // Utils
 import { GOOGLE_OAUTH_CLIENT_ID } from "./config.js";
+import Logout from "./utils/Logout";
 import Protected from "./utils/Protected";
 import Redirect from "./utils/Redirect";
 // Layouts
@@ -18,6 +19,7 @@ import Duty from "./views/admin/Duty.jsx";
 import DutyCreate from "./views/admin/DutyCreate.jsx";
 import DutyEdit from "./views/admin/DutyEdit.jsx";
 import DutyShow from "./views/admin/DutyShow.jsx";
+import Employee from "./views/admin/Employee";
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
 import EmployeeShow from "./views/admin/EmployeeShow";
@@ -44,8 +46,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Redirect to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route element={<Protected element={<AdminLayout />} role="admin" />}>
-          <Route index path="admin/employee" element={<Dashboard />} />
+          <Route index path="admin/" element={<Dashboard />} />
+          <Route path="admin/dashboard" element={<Redirect to="/admin" />} />
+          <Route path="admin/employee" element={<Employee />} />
           <Route path="admin/employee/create" element={<EmployeeCreate />} />
           <Route path="admin/employee/show/:id" element={<EmployeeShow />} />
           <Route path="admin/employee/edit/:id" element={<EmployeeEdit />} />

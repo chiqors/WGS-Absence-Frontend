@@ -5,6 +5,10 @@ const AUTH_URL = `${BACKEND_URL + BACKEND_AUTH_PATH}`;
 // ngrok-skip-browser-warning is a custom header to skip the ngrok browser warning
 axios.defaults.headers.common["ngrok-skip-browser-warning"] = "any value";
 
+const getAuth = async (id) => {
+  return await axios.get(`${AUTH_URL}/auth/${id}`);
+};
+
 const doLogin = async (data) => {
   return await axios.post(`${AUTH_URL}/login`, data);
 };
@@ -26,6 +30,7 @@ const getGoogleOauthAccount = async (employeeId) => {
 };
 
 export default {
+  getAuth,
   doLogin,
   doGoogleLogin,
   linkGoogleAccount,
