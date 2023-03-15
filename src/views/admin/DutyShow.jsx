@@ -110,25 +110,24 @@ const DutyShow = () => {
                 <tbody>
                   {!loading ? (
                     duty?.attendance.length > 0 ? (
-                      duty?.duty_attendance?.map((dutyAttendance) => (
+                      duty?.attendance?.map((dutyAttendance) => (
                         <tr key={dutyAttendance.id}>
                           <td className="border px-4 py-2">
                             {dutyAttendance.id}
                           </td>
                           <td className="border px-4 py-2">
-                            {dutyAttendance.employee.name}
+                            {dutyAttendance.employee.full_name}
                           </td>
                           <td className="border px-4 py-2">
-                            {helper.getHumanReadableDate(
-                              dutyAttendance.time_in
-                            )}
-                            <br />
-                            {helper.getHumanReadableDate(
+                            {helper.getHumanWorkingHoursWithDay(
+                              dutyAttendance.time_in,
                               dutyAttendance.time_out
                             )}
                           </td>
                           <td className="border px-4 py-2">
-                            {dutyAttendance.note_out}
+                            IN: {dutyAttendance.note_in}
+                            <br />
+                            OUT: {dutyAttendance.note_out}
                           </td>
                         </tr>
                       ))

@@ -140,6 +140,20 @@ const getDurationType = (duration) => {
   }
 };
 
+const getHumanWorkingHoursWithDay = (time_in, time_out) => {
+  // output: March 1, 2021 (1:21 PM - 2:00 PM)
+  // if time_out is null, output: March 1, 2021 (IN 1:21 PM)
+  if (time_out === null) {
+    return `${getHumanReadableDate(time_in)} (IN: ${convertDatetimeToTime(
+      time_in
+    )})`;
+  } else {
+    return `${getHumanReadableDate(time_in)} (${convertDatetimeToTime(
+      time_in
+    )} - ${convertDatetimeToTime(time_out)})`;
+  }
+};
+
 export default {
   getAgeFromBirthDate,
   checkIfNumIsMultipleOf,
@@ -156,4 +170,5 @@ export default {
   getHumanReadableStatus,
   getHumanReadableStatusColor,
   getDurationType,
+  getHumanWorkingHoursWithDay,
 };
