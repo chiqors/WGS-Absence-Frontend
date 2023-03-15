@@ -5,33 +5,33 @@ import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
 
 const DutyEdit = () => {
-  const { id, dutyId } = useParams();
+  const { id } = useParams();
   const [formData, setFormData] = useState({
-    job_id: id,
+    job_id: "",
     name: "",
     description: "",
     duration_type: "full_time",
     status: "not_assigned",
   });
+  const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const listMenu = [
     {
-      title: "Job List",
-      href: "/admin/job",
-    },
-    {
-      title: "Job Show",
-      href: `/admin/job/show/${id}`,
+      title: "Duty List",
+      href: "/admin/duty",
     },
     {
       title: "Edit Duty",
-      href: `/admin/job/show/${id}/duty/edit/${dutyId}`,
+      href: `/admin/duty/edit/${id}`,
     },
   ];
 
   useEffect(() => {
+    fetchJobs().then((data) => {
+      setJobs(data);
+    });
     fetchDuty()
       .then((data) => {
         setFormData(data);
@@ -43,7 +43,7 @@ const DutyEdit = () => {
 
     return () => {
       setFormData({
-        job_id: id,
+        job_id: "",
         name: "",
         description: "",
         duration_type: "full_time",
@@ -53,7 +53,12 @@ const DutyEdit = () => {
   }, []);
 
   const fetchDuty = async () => {
-    const response = await dutyApi.getDutyById(dutyId);
+    const response = await dutyApi.getDutyById(id);
+    return response.data;
+  };
+
+  const fetchJobs = async () => {
+    const response = await dutyApi.getAllJobsForSelectBox();
     return response.data;
   };
 
@@ -80,12 +85,14 @@ const DutyEdit = () => {
       return;
     } else {
       setError(null);
-      dutyApi.updateDuty(dutyId, formData).then((response) => {
-        if (response.status === 200) {
-          navigate(`/admin/job/show/${id}`);
-        }
+      dutyApi.updateDuty(id, formData).then(() => {
+        navigate("/admin/duty");
       });
     }
+  };
+
+  const handleFormChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -102,6 +109,25 @@ const DutyEdit = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
+              <label htmlFor="job_id" className="label">
+                Job
+              </label>
+              <select
+                className="select select-bordered"
+                id="job_id"
+                name="job_id"
+                onChange={handleFormChange}
+                value={formData.job_id}
+              >
+                <option value="">Select Job</option>
+                {jobs.map((job) => (
+                  <option key={job.id} value={job.id}>
+                    {job.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
               <label htmlFor="name" className="label">
                 Name
               </label>
@@ -111,9 +137,7 @@ const DutyEdit = () => {
                 id="name"
                 name="name"
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                onChange={handleFormChange}
               />
             </div>
             <div className="form-group">
@@ -126,9 +150,7 @@ const DutyEdit = () => {
                 name="description"
                 rows="3"
                 value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
+                onChange={handleFormChange}
               ></textarea>
             </div>
             <div className="form-group">
@@ -140,9 +162,7 @@ const DutyEdit = () => {
                 id="duration_type"
                 name="duration_type"
                 value={formData.duration_type}
-                onChange={(e) =>
-                  setFormData({ ...formData, duration_type: e.target.value })
-                }
+                onChange={handleFormChange}
               >
                 <option value="full_time">Full Time</option>
                 <option value="business_trip">Business Trip</option>
@@ -157,9 +177,7 @@ const DutyEdit = () => {
                 id="status"
                 name="status"
                 value={formData.status}
-                onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value })
-                }
+                onChange={handleFormChange}
               >
                 <option value="not_assigned">Not Assigned</option>
                 <option value="assigned">Assigned</option>

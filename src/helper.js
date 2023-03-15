@@ -97,6 +97,49 @@ const truncateString = (str, num) => {
   return str.slice(0, num) + "...";
 };
 
+const getHumanReadableStatus = (status) => {
+  // get human readable status
+  // not_assigned, assigned, need_discussion, completed, cancelled
+  if (status === "not_assigned") {
+    return "Not Assigned";
+  } else if (status === "assigned") {
+    return "Assigned";
+  } else if (status === "need_discussion") {
+    return "Need Discussion";
+  } else if (status === "completed") {
+    return "Completed";
+  } else if (status === "cancelled") {
+    return "Cancelled";
+  }
+};
+
+const getHumanReadableStatusColor = (status) => {
+  // get human readable badge color
+  // not_assigned, assigned, need_discussion, completed, cancelled
+  if (status === "not_assigned") {
+    return "secondary";
+  } else if (status === "assigned") {
+    return "primary";
+  } else if (status === "need_discussion") {
+    return "warning";
+  } else if (status === "completed") {
+    return "success";
+  } else if (status === "cancelled") {
+    return "danger";
+  }
+};
+
+const getDurationType = (duration) => {
+  // full_time, part_time, business_trip
+  if (duration === "full_time") {
+    return "Full Time";
+  } else if (duration === "part_time") {
+    return "Part Time";
+  } else if (duration === "business_trip") {
+    return "Business Trip";
+  }
+};
+
 export default {
   getAgeFromBirthDate,
   checkIfNumIsMultipleOf,
@@ -110,4 +153,7 @@ export default {
   getHumanWorkingHours,
   getCurrentWeeks,
   truncateString,
+  getHumanReadableStatus,
+  getHumanReadableStatusColor,
+  getDurationType,
 };
