@@ -14,19 +14,22 @@ import UserLayout from "./layouts/UserLayout";
 import Attendance from "./views/admin/Attendance";
 import AttendanceShow from "./views/admin/AttendanceShow";
 import Dashboard from "./views/admin/Dashboard";
+import Duty from "./views/admin/Duty.jsx";
 import DutyCreate from "./views/admin/DutyCreate.jsx";
 import DutyEdit from "./views/admin/DutyEdit.jsx";
+import DutyShow from "./views/admin/DutyShow.jsx";
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
 import EmployeeShow from "./views/admin/EmployeeShow";
 import Job from "./views/admin/Job";
 import JobCreate from "./views/admin/JobCreate.jsx";
+import JobDutyCreate from "./views/admin/JobDutyCreate.jsx";
+import JobDutyEdit from "./views/admin/JobDutyEdit.jsx";
+import JobDutyShow from "./views/admin/JobDutyShow.jsx";
 import JobEdit from "./views/admin/JobEdit.jsx";
 import JobShow from "./views/admin/JobShow.jsx";
 // User Pages
-import TestUpload from "./views/admin/TestUpload";
 import Home from "./views/user/Home";
-import Profile from "./views/user/Profile";
 // Common Pages
 import Error404 from "./views/Error404";
 import Login from "./views/Login";
@@ -54,17 +57,23 @@ export default function App() {
           <Route path="admin/job/edit/:id" element={<JobEdit />} />
           <Route
             path="admin/job/show/:id/duty/create"
-            element={<DutyCreate />}
+            element={<JobDutyCreate />}
           />
           <Route
             path="admin/job/show/:id/duty/edit/:dutyId"
-            element={<DutyEdit />}
+            element={<JobDutyEdit />}
           />
+          <Route
+            path="admin/job/show/:id/duty/show/:dutyId"
+            element={<JobDutyShow />}
+          />
+          <Route path="admin/duty" element={<Duty />} />
+          <Route path="admin/duty/create" element={<DutyCreate />} />
+          <Route path="admin/duty/show/:id" element={<DutyShow />} />
+          <Route path="admin/duty/edit/:id" element={<DutyEdit />} />
         </Route>
         <Route element={<Protected element={<UserLayout />} role="employee" />}>
           <Route index path="user/" element={<Home />} />
-          <Route path="user/profile" element={<Profile />} />
-          <Route path="user/test" element={<TestUpload />} />
         </Route>
         <Route path="/404" element={<Error404 />} />
         <Route path="*" element={<Redirect to="/404" />} />
