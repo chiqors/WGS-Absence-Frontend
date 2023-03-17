@@ -21,7 +21,7 @@ const Log = () => {
     search: "",
   };
   const [tab, setTab] = useState("error");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const limit = parseInt(searchParams.get("limit"));
   const sort = searchParams.get("sort");
@@ -34,6 +34,8 @@ const Log = () => {
   if (search) tableData.search = search;
 
   const handleTab = (tab) => {
+    // reset url query
+    if (searchParams.has("page")) searchParams.delete("page");
     setTab(tab);
   };
 

@@ -17,7 +17,7 @@ const AccessLogRow = ({ data }) => {
       </td>
       <td>{data.message}</td>
       <td>
-        <span className="py-1 px-3 rounded-full text-xs bg-green-200 text-green-600">
+        <span className="py-1 px-3 rounded-full text-xs bg-yellow-200 text-yellow-600">
           {data.server}
         </span>{" "}
         {data.urlPath}
@@ -28,7 +28,7 @@ const AccessLogRow = ({ data }) => {
         </span>
       </td>
       <td className="text-center">
-        <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
+        <span className="bg-blue-200 text-blue-600 py-1 px-3 rounded-full text-xs">
           {data.httpStatus}
         </span>
       </td>
@@ -136,7 +136,6 @@ const PaginatedAccessLog = ({ data }) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetchLogs(currentPage, showPerPage, search);
-      console.log(res);
       setLogs(res.data.data);
       setPageCount(res.data.totalPage);
       setTotalData(res.data.totalData);

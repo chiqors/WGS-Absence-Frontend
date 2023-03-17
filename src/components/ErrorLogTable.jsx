@@ -11,28 +11,14 @@ const ErrorLogRow = ({ data }) => {
     <tr className="border-b border-gray-200 hover:bg-gray-100">
       <td>{helper.getHumanReadableDatetime(data.time)}</td>
       <td>
-        {data.stackTrace ? (
+        {data.isStackTrace ? (
           <>
-            <label
-              className="py-1 px-3 rounded-full text-xs bg-red-200 text-red-600 cursor-pointer"
-              htmlFor="stacktrace-modal"
-            >
-              Error (StackTrace)
-            </label>
-            <input
-              type="checkbox"
-              id="stacktrace-modal"
-              className="modal-toggle"
-            />
-            <label htmlFor="stacktrace-modal" className="modal cursor-pointer">
-              <label className="modal-box relative">
-                <h3 className="text-lg font-bold">StackTrace Message</h3>
-                <p className="py-4">{data.stackTrace}</p>
-              </label>
+            <label className="py-1 px-3 rounded-full text-xs bg-red-200 text-red-600">
+              {data.level} (StackTrace)
             </label>
           </>
         ) : (
-          <span className="py-1 px-3 rounded-full text-xs bg-green-200 text-green-600">
+          <span className="py-1 px-3 rounded-full text-xs bg-orange-200 text-orange-600">
             {data.level}
           </span>
         )}
