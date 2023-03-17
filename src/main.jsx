@@ -30,6 +30,7 @@ import JobDutyEdit from "./views/admin/JobDutyEdit.jsx";
 import JobDutyShow from "./views/admin/JobDutyShow.jsx";
 import JobEdit from "./views/admin/JobEdit.jsx";
 import JobShow from "./views/admin/JobShow.jsx";
+import Log from "./views/admin/Log";
 // User Pages
 import Home from "./views/user/Home";
 // Common Pages
@@ -76,6 +77,7 @@ export default function App() {
           <Route path="admin/duty/create" element={<DutyCreate />} />
           <Route path="admin/duty/show/:id" element={<DutyShow />} />
           <Route path="admin/duty/edit/:id" element={<DutyEdit />} />
+          <Route path="admin/log" element={<Log />} />
         </Route>
         <Route element={<Protected element={<UserLayout />} role="employee" />}>
           <Route index path="user/" element={<Home />} />

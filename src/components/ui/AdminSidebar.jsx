@@ -4,6 +4,7 @@ import { FiAirplay } from "react-icons/fi";
 import { HiUserGroup } from "react-icons/hi";
 import { IoTelescopeSharp } from "react-icons/io5";
 import { RiTaskFill } from "react-icons/ri";
+import { SiAirtable } from "react-icons/si";
 import { Link } from "react-router-dom";
 import { APP_NAME } from "../../config";
 
@@ -28,6 +29,8 @@ const AdminSidebar = () => {
       setActive("job");
     } else if (url === "/admin/attendance") {
       setActive("attendance");
+    } else if (url === "/admin/log") {
+      setActive("log");
     }
   };
 
@@ -60,6 +63,21 @@ const AdminSidebar = () => {
             >
               <FiAirplay />
               Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/log"
+              className={
+                `${active === "log" ? "active" : ""}` +
+                ` ` +
+                `hover:text-white hover:bg-slate-700`
+              }
+              name="log"
+              onClick={() => setActive("log")}
+            >
+              <SiAirtable />
+              Logs
             </Link>
           </li>
         </ul>

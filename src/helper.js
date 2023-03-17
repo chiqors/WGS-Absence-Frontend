@@ -46,6 +46,18 @@ const getHumanReadableDate = (datetime) => {
   return dayjs(datetime).format("MMMM D, YYYY");
 };
 
+const getHumanReadableTime = (datetime) => {
+  // get human readable time
+  // example output: "12:00 AM"
+  return dayjs(datetime).format("h:mm A");
+};
+
+const getHumanReadableDatetime = (datetime) => {
+  // get human readable time
+  // example output: "September 1, 2021 12:00 AM"
+  return dayjs(datetime).format("MMMM D, YYYY h:mm A");
+};
+
 const getTodayYesterdayAgo = (datetime) => {
   // get today, yesterday, ago
   // example output: "today", "yesterday", "2 days ago"
@@ -162,6 +174,8 @@ export default {
   getBirthdate,
   getDurationHours,
   getHumanReadableDate,
+  getHumanReadableTime,
+  getHumanReadableDatetime,
   getTodayYesterdayAgo,
   convertDatetimeToTime,
   getHumanWorkingHours,
