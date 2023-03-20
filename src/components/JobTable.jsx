@@ -106,7 +106,7 @@ const PaginatedJob = ({ page, limit }) => {
           forcePage={currentPage - 1}
         />
       </div>
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="table table-striped table-hover w-full">
           <thead>
             <tr>

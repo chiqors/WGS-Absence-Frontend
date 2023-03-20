@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import attendanceApi from "../../api/attendance";
 import dutyApi from "../../api/duty";
 import employee from "../../api/employee";
+import helper from "../../helper.js";
 
 const Home = () => {
   const [dutyList, setDutyList] = useState([]);
@@ -71,7 +72,13 @@ const Home = () => {
         jobIdFetch
       );
       prevDutyNotCompletedFetch.forEach((duty) => {
-        setDutyList((prev) => [...prev, duty.duty]);
+        // check if the duty is already exist in the duty list
+        const isDutyExist = dutyList.some(
+          (dutyList) => dutyList.id === duty.id
+        );
+        if (!isDutyExist) {
+          setDutyList((prev) => [...prev, duty]);
+        }
       });
       const prevDutyListFetch = await fetchPrevDutyList();
       setPrevDutyList(prevDutyListFetch);
@@ -200,7 +207,23 @@ const Home = () => {
                               <option value="">-- Select Duty --</option>
                               {dutyList.map((duty) => (
                                 <option key={duty.id} value={duty.id}>
-                                  {duty.name}
+                                  {duty.name + " "}
+                                  <br />
+                                  {/* if there's attendance */}
+                                  {duty.attendance ? (
+                                    <span className="text-xs text-gray-500">
+                                      |{" "}
+                                      {helper.getHumanReadableDate(
+                                        duty.attendance[0].time_in
+                                      )}
+                                      {" | "}
+                                      {duty.attendance[0].employee.full_name}
+                                    </span>
+                                  ) : (
+                                    <span className="text-xs text-gray-500">
+                                      | Not Assigned
+                                    </span>
+                                  )}
                                 </option>
                               ))}
                             </select>
@@ -299,7 +322,7 @@ const Home = () => {
                 href="#"
                 className="text-sm font-medium text-blue-600 hover:underline"
               >
-                View all
+                View all (WIP)
               </a>
             </div>
             <div className="flow-root">
@@ -308,22 +331,16 @@ const Home = () => {
                 className="divide-y divide-gray-200 dark:divide-gray-700"
               >
                 <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    {/* <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        Develop Project A
-                      </p>
-                      <p className="text-sm text-gray-500 truncate">
-                        Yesterday
-                      </p>
-                    </div> */}
+                  <div className="flex flex-col space-y-2">
                     {prevDutyList.map((attenance) => (
-                      <div key={attenance.id} className="flex-1 min-w-0">
+                      <div key={attenance.id} className="min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {attenance.duty.name}
                         </p>
                         <p className="text-sm text-gray-500 truncate">
-                          {attenance.time_in} - {attenance.time_out}
+                          {helper.getHumanReadableDate(attenance.time_in)}
+                          {" - "}
+                          {helper.getHumanReadableDate(attenance.time_out)}
                         </p>
                       </div>
                     ))}
