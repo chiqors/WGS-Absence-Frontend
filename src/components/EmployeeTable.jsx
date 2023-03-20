@@ -10,10 +10,17 @@ const EmployeeRow = (props) => {
     e.preventDefault();
     const checkConfirm = confirm("Are you sure to delete this employee?");
     if (checkConfirm) {
-      const result = await employeeApi.deleteEmployee(paramId);
-      if (result) {
-        props.onDelete(paramId);
-      }
+      // if (result) {
+      //   props.onDelete(paramId);
+      // }
+      await employeeApi
+        .deleteEmployee(paramId)
+        .then((res) => {
+          props.onDelete(paramId);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 

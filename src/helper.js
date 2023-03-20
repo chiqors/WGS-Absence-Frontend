@@ -166,6 +166,17 @@ const getHumanWorkingHoursWithDay = (time_in, time_out) => {
   }
 };
 
+// const getHumanReadableDatetime = (datetime) => {
+//   // get human readable time
+//   // example output: "September 1, 2021 12:00 AM"
+//   return dayjs(datetime).format("MMMM D, YYYY h:mm A");
+// };
+
+const getDatetimeNow = () => {
+  // example output: "September 1, 2021 12:00:00 AM"
+  return dayjs().format("MMMM D, YYYY h:mm:ss A");
+};
+
 export default {
   getAgeFromBirthDate,
   checkIfNumIsMultipleOf,
@@ -185,4 +196,5 @@ export default {
   getHumanReadableStatusColor,
   getDurationType,
   getHumanWorkingHoursWithDay,
+  getDatetimeNow,
 };

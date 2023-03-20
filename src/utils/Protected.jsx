@@ -4,25 +4,32 @@ import { getJwtDecoded } from "./AuthGuard";
 
 const Protected = ({ element, role }) => {
   const navigate = useNavigate();
-  const token = getJwtDecoded();
+  let token = null;
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (token) {
-      // check if role is same as the role in token
-      if (token.role === role) {
-        setAuthenticated(true);
-      }
-      // check if role is not defined in props
-      if (!role) {
-        setAuthenticated(true);
-      }
-      // if role is not same as the role in token
-      if (token.role !== role) {
-        console.log("not authorized");
+    try {
+      const tkn = getJwtDecoded();
+      token = tkn;
+      if (token) {
+        // check if role is same as the role in token
+        if (token.role === role) {
+          setAuthenticated(true);
+        }
+        // check if role is not defined in props
+        if (!role) {
+          setAuthenticated(true);
+        }
+        // if role is not same as the role in token
+        if (token.role !== role) {
+          console.log("not authorized");
+          navigate("/login");
+        }
+      } else {
         navigate("/login");
       }
-    } else {
+    } catch (error) {
+      console.log(error);
       navigate("/login");
     }
   }, [token, role, navigate]);

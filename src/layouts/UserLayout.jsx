@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import employeeApi from "../api/employee";
 import GoogleLink from "../components/GoogleLink";
+import helper from "../helper";
 import { getJwtDecoded } from "../utils/AuthGuard";
 
 const UserLayout = () => {
@@ -9,6 +10,7 @@ const UserLayout = () => {
   const navigate = useNavigate();
   const userData = getJwtDecoded();
   const [employee, setEmployee] = useState({});
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -22,6 +24,10 @@ const UserLayout = () => {
       }
     };
     fetchEmployee();
+    const interval = setInterval(() => {
+      setTimer(helper.getDatetimeNow());
+    }, 1000);
+    return () => clearInterval(interval);
   }, [userData.employee_id]);
 
   const handleLogout = () => {
@@ -44,6 +50,9 @@ const UserLayout = () => {
                   <a className="btn btn-ghost normal-case text-xl">
                     {app_name}
                   </a>
+                </div>
+                <div className="flex-none">
+                  <a className="badge badge-info p-5 font-bold">{timer}</a>
                 </div>
                 <div className="flex-none">
                   <label
