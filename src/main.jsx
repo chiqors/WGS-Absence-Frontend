@@ -1,8 +1,9 @@
 // Dependencies & Libraries
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 // Utils
 import { GOOGLE_OAUTH_CLIENT_ID } from "./config.js";
 import Logout from "./utils/Logout";
@@ -41,14 +42,22 @@ import "./index.css";
 
 const clientId = GOOGLE_OAUTH_CLIENT_ID;
 
-export default function App() {
+const RouterComponent = () => {
+  const location = useLocation();
   return (
-    <BrowserRouter>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Redirect to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
-        <Route element={<Protected element={<AdminLayout />} role="admin" />}>
+        <Route
+          element={
+            <Protected
+              element={<AdminLayout location={location} />}
+              role="admin"
+            />
+          }
+        >
           <Route index path="admin/" element={<Dashboard />} />
           <Route path="admin/dashboard" element={<Redirect to="/admin" />} />
           <Route path="admin/employee" element={<Employee />} />
@@ -79,11 +88,28 @@ export default function App() {
           <Route path="admin/duty/edit/:id" element={<DutyEdit />} />
           <Route path="admin/log" element={<Log />} />
         </Route>
-        <Route element={<Protected element={<UserLayout />} role="employee" />}>
+        <Route
+          element={
+            <Protected
+              element={<UserLayout location={location} />}
+              role="employee"
+            />
+          }
+        >
           <Route index path="user/" element={<Home />} />
         </Route>
         <Route path="/404" element={<Error404 />} />
         <Route path="*" element={<Redirect to="/404" />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<RouterComponent />} path="/*" />
       </Routes>
     </BrowserRouter>
   );

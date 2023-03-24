@@ -163,7 +163,7 @@ const Home = () => {
       {/* if mobile screen, just split vertically */}
       <div className="grid lg:grid-cols-3 gap-4 sm:grid-cols-2 mt-5 mx-5">
         <div className="lg:col-span-2 flex flex-col items-center">
-          <div className="card w-96 shadow-md">
+          <div className="card w-96 shadow-xl">
             <div className="card-body items-center text-center">
               <h2 className="card-title">Absence!</h2>
 
@@ -333,7 +333,7 @@ const Home = () => {
                 <li className="py-3 sm:py-4">
                   <div className="flex flex-col space-y-2">
                     {prevDutyList.map((attenance) => (
-                      <div key={attenance.id} className="min-w-0">
+                      <div key={attenance.id}>
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {attenance.duty.name}
                         </p>

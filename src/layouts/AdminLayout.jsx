@@ -1,19 +1,15 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import authApi from "../api/auth";
 import AdminHeader from "../components/ui/AdminHeader";
 import AdminSidebar from "../components/ui/AdminSidebar";
-import { getJwtDecoded, removeJwt } from "../utils/AuthGuard";
+import { getJwtDecoded } from "../utils/AuthGuard";
 
-const Layout = () => {
+const AdminLayout = ({ location }) => {
   const [employee, setEmployee] = useState({});
   const userData = getJwtDecoded();
   const navigate = useNavigate();
-
-  const doLogout = () => {
-    removeJwt();
-    navigate("/login");
-  };
 
   const fetchEmployee = async (id) => {
     const response = await authApi.getAuth(id);
@@ -35,9 +31,20 @@ const Layout = () => {
           {/* navbar / header */}
           <AdminHeader userData={employee} />
           {/* main content */}
-          <div className="container mx-auto px-6">
-            <Outlet />
-          </div>
+          <AnimatePresence mode="wait">
+            {/* slide up from bottom with opacity and Y axis for positioning, slowly */}
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="container mx-auto px-6">
+                <Outlet />
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </main>
         {/* Sidebar content here */}
         <AdminSidebar />
@@ -46,4 +53,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default AdminLayout;

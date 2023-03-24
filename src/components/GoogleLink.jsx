@@ -63,11 +63,11 @@ const GoogleLink = () => {
   }, [data.employee_id]);
 
   return (
-    <li>
+    <>
       {processing && <UserLoading />}
       <button
         type="button"
-        className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-10 text-center justify-center"
+        className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-5 text-center justify-center hover:bg-gray-100"
         onClick={isLinked ? unlinkGoogleAccount : linkGoogleAccount}
       >
         <GoogleIcon />
@@ -75,7 +75,7 @@ const GoogleLink = () => {
           {isLinked ? "Unlink" : "Link"} Google Account
         </p>
       </button>
-    </li>
+    </>
   );
 };
 

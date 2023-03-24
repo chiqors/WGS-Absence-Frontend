@@ -13,7 +13,11 @@ const checkIfNumIsMultipleOf = (number, multipleOf) => {
 
 const checkIfPhotoFromExternalSource = (photo) => {
   // check if photo is from external source
-  return photo.includes("http");
+  if (photo) {
+    return photo.includes("http");
+  } else {
+    return false;
+  }
 };
 
 const getAssetPath = (asset) => {

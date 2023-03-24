@@ -1,13 +1,14 @@
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { IoLogOut } from "react-icons/io5";
+import { Link, Outlet } from "react-router-dom";
 import employeeApi from "../api/employee";
 import GoogleLink from "../components/GoogleLink";
 import helper from "../helper";
 import { getJwtDecoded } from "../utils/AuthGuard";
 
-const UserLayout = () => {
+const UserLayout = ({ location }) => {
   const app_name = import.meta.env.VITE_APP_NAME;
-  const navigate = useNavigate();
   const userData = getJwtDecoded();
   const [employee, setEmployee] = useState({});
   const [timer, setTimer] = useState(null);
@@ -30,13 +31,14 @@ const UserLayout = () => {
     return () => clearInterval(interval);
   }, [userData.employee_id]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
   return (
-    <>
+    <motion.div
+      key={location.pathname}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="drawer drawer-end">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
@@ -51,8 +53,35 @@ const UserLayout = () => {
                     {app_name}
                   </a>
                 </div>
-                <div className="flex-none">
-                  <a className="badge badge-info p-5 font-bold">{timer}</a>
+                <div className="flex-none mr-3">
+                  <motion.span
+                    className="badge badge-ghost rounded-box p-4"
+                    animate={{ scale: [1, 1.2, 1.2, 1, 1] }}
+                    transition={{ duration: 1 }}
+                  >
+                    {timer ? (
+                      timer
+                    ) : (
+                      <>
+                        {/* clock spinning position */}
+                        <span className="animate-spin">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            className="inline-block w-5 h-5 stroke-current"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            ></path>
+                          </svg>
+                        </span>
+                      </>
+                    )}
+                  </motion.span>
                 </div>
                 <div className="flex-none">
                   <label
@@ -77,7 +106,6 @@ const UserLayout = () => {
               </div>
             </div>
             <div className="flex-grow">
-              {/* <!-- Page content here --> */}
               <Outlet />
             </div>
           </div>
@@ -86,15 +114,43 @@ const UserLayout = () => {
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
             {/* <!-- Sidebar content here --> */}
-            <li>
-              <a onClick={handleLogout}>Logout</a>
+            {/* profile with photo_url and full_name */}
+            {/* li reset for no hover, no click style */}
+            <div className="flex flex-col">
+              <div className="flex flex-row">
+                <div className="flex-none">
+                  {employee?.photo_url !== null ? (
+                    <motion.img
+                      src={helper.getAssetPath(employee?.photo_url)}
+                      alt="profile"
+                      className="w-16 h-16 rounded-full"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.25 }}
+                    />
+                  ) : (
+                    <span>Loading...</span>
+                  )}
+                </div>
+                <div className="flex-none p-3">
+                  <div className="text-lg font-bold">{employee?.full_name}</div>
+                  <div className="text-sm">{employee?.job?.name}</div>
+                </div>
+              </div>
+              <div className="mt-0 pt-0">
+                <GoogleLink data={employee} />
+              </div>
+            </div>
+            <div className="divider divide-gray-300 mb-0 pb-0"></div>
+            <li className="mb-0 pb-0">
+              <Link to="/logout">
+                <IoLogOut className="inline-block w-7 h-7 mr-2" />
+                Logout
+              </Link>
             </li>
-            {/* link/unlink oauth account */}
-            <GoogleLink data={employee} />
           </ul>
         </div>
       </div>
-    </>
+    </motion.div>
   );
 };
 
