@@ -170,15 +170,41 @@ const getHumanWorkingHoursWithDay = (time_in, time_out) => {
   }
 };
 
-// const getHumanReadableDatetime = (datetime) => {
-//   // get human readable time
-//   // example output: "September 1, 2021 12:00 AM"
-//   return dayjs(datetime).format("MMMM D, YYYY h:mm A");
-// };
+const getHowManyDaysInThisMonth = () => {
+  // get how many days in this month
+  return dayjs().daysInMonth();
+};
+
+const getHowManyWorkingDaysInThisMonth = () => {
+  // get how many working days in this month
+  // exclude saturday and sunday
+  const daysInMonth = dayjs().daysInMonth();
+  let workingDays = 0;
+  for (let i = 0; i < daysInMonth; i++) {
+    const day = dayjs().startOf("month").add(i, "day").format("dddd");
+    if (day !== "Saturday" && day !== "Sunday") {
+      workingDays++;
+    }
+  }
+  return workingDays;
+};
 
 const getDatetimeNow = () => {
   // example output: "September 1, 2021 12:00:00 AM"
   return dayjs().format("MMMM D, YYYY h:mm:ss A");
+};
+
+const numPlaced = (number) => {
+  // 1 => 1st, 2 => 2nd, so on
+  if (number === 1) {
+    return `${number}st`;
+  } else if (number === 2) {
+    return `${number}nd`;
+  } else if (number === 3) {
+    return `${number}rd`;
+  } else {
+    return `${number}th`;
+  }
 };
 
 export default {
@@ -200,5 +226,8 @@ export default {
   getHumanReadableStatusColor,
   getDurationType,
   getHumanWorkingHoursWithDay,
+  getHowManyDaysInThisMonth,
+  getHowManyWorkingDaysInThisMonth,
   getDatetimeNow,
+  numPlaced,
 };

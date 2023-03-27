@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AttendanceTable from "../../components/AttendanceTable";
+import AttendanceTable from "../../components/tables/AttendanceTable";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 
 const Attendance = () => {

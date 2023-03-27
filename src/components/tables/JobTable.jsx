@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import jobApi from "../api/job";
-import helper from "../helper.js";
-import CircleLoading from "./ui/CircleLoading";
+import jobApi from "../../api/job";
+import helper from "../../helper.js";
+import CircleLoading from "../ui/CircleLoading";
 
 const JobRow = ({ data }) => {
   return (

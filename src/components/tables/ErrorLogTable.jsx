@@ -1,10 +1,11 @@
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { useSearchParams } from "react-router-dom";
-import logApi from "../api/log";
-import helper from "../helper";
-import CircleLoading from "./ui/CircleLoading";
+import logApi from "../../api/log";
+import helper from "../../helper";
+import CircleLoading from "../ui/CircleLoading";
 
 const ErrorLogRow = ({ data }) => {
   return (
@@ -290,7 +291,7 @@ const PaginatedErrorLog = ({ data }) => {
           <tbody>
             {!isLoading ? (
               logs.length > 0 ? (
-                logs.map((log) => <ErrorLogRow data={log} />)
+                logs.map((log, index) => <ErrorLogRow key={index} data={log} />)
               ) : (
                 <tr>
                   <td colSpan="6" className="text-center">
@@ -313,7 +314,16 @@ const PaginatedErrorLog = ({ data }) => {
 };
 
 const ErrorLogTable = ({ data }) => {
-  return <PaginatedErrorLog data={data} />;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <PaginatedErrorLog data={data} />
+    </motion.div>
+  );
 };
 
 export default ErrorLogTable;

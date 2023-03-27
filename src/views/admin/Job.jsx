@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import JobTable from "../../components/JobTable";
+import JobTable from "../../components/tables/JobTable";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 
 const Job = () => {

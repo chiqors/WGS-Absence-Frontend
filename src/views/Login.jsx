@@ -97,14 +97,14 @@ const Login = () => {
       initial={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <div className="bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4 h-screen">
+      <div className="w-full h-screen px-4 py-16 bg-gradient-to-tl from-green-400 to-indigo-900">
         <div className="flex flex-col items-center justify-center">
-          <div className="bg-white shadow rounded lg:w-1/3  md:w-1/2 w-full p-10">
+          <div className="w-full p-10 bg-white rounded shadow lg:w-1/3 md:w-1/2">
             <p
               tabIndex={0}
               role="heading"
               aria-label="Login to your account"
-              className="text-2xl font-extrabold leading-6 text-gray-800 text-center"
+              className="text-2xl font-extrabold leading-6 text-center text-gray-800"
             >
               Login to your account
             </p>
@@ -124,17 +124,17 @@ const Login = () => {
                     onFailure={handleFailure}
                   />
 
-                  <div className="w-full flex items-center justify-between py-5">
+                  <div className="flex items-center justify-between w-full py-5">
                     <hr className="w-full bg-gray-400" />
                     <p className="text-base font-medium leading-4 px-2.5 text-gray-400">
                       OR
                     </p>
-                    <hr className="w-full bg-gray-400  " />
+                    <hr className="w-full bg-gray-400 " />
                   </div>
 
                   {error && (
                     <div
-                      className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                      className="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded"
                       role="alert"
                     >
                       <span className="block sm:inline">{error}</span>
@@ -143,7 +143,7 @@ const Login = () => {
 
                   {success && (
                     <div
-                      className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                      className="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded"
                       role="alert"
                     >
                       <span className="block sm:inline">{success}</span>
@@ -167,7 +167,7 @@ const Login = () => {
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     transition={{ delay: 0.5, duration: 0.25 }}
-                    className="mt-5 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                    className="relative px-4 py-3 mt-5 mb-4 text-green-700 bg-green-100 border border-green-400 rounded"
                   >
                     <span className="block sm:inline">
                       <BsFillCheckCircleFill className="inline-block mr-2" />

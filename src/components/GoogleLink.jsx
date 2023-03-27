@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import authApi from "../api/auth";
 import { getJwtDecoded } from "../utils/AuthGuard";
 import GoogleIcon from "./svg/GoogleIcon";
-import UserLoading from "./ui/UserLoading";
 
 const GoogleLink = () => {
   const [isLinked, setIsLinked] = useState(false);
@@ -64,17 +63,22 @@ const GoogleLink = () => {
 
   return (
     <>
-      {processing && <UserLoading />}
-      <button
-        type="button"
-        className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-5 text-center justify-center hover:bg-gray-100"
-        onClick={isLinked ? unlinkGoogleAccount : linkGoogleAccount}
-      >
-        <GoogleIcon />
-        <p className="text-base font-medium ml-4 text-gray-700">
-          {isLinked ? "Unlink" : "Link"} Google Account
-        </p>
-      </button>
+      {!processing ? (
+        <button
+          type="button"
+          className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-5 text-center justify-center hover:bg-gray-100"
+          onClick={isLinked ? unlinkGoogleAccount : linkGoogleAccount}
+        >
+          <GoogleIcon />
+          <p className="ml-4 text-base font-medium text-gray-700">
+            {isLinked ? "Unlink" : "Link"} Google Account
+          </p>
+        </button>
+      ) : (
+        <div className="flex items-center justify-center mt-5">
+          <div className="w-5 h-5 border-b-2 border-gray-700 rounded-full animate-spin"></div>
+        </div>
+      )}
     </>
   );
 };

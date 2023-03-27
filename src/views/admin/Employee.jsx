@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import EmployeeTable from "../../components/EmployeeTable";
+import EmployeeTable from "../../components/tables/EmployeeTable";
 
 const Employee = () => {
   const [searchParams, setSearchParams] = useSearchParams();

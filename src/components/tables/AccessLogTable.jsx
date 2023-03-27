@@ -1,10 +1,11 @@
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { useSearchParams } from "react-router-dom";
-import logApi from "../api/log";
-import helper from "../helper";
-import CircleLoading from "./ui/CircleLoading";
+import logApi from "../../api/log";
+import helper from "../../helper";
+import CircleLoading from "../ui/CircleLoading";
 
 const AccessLogRow = ({ data }) => {
   return (
@@ -304,7 +305,16 @@ const PaginatedAccessLog = ({ data }) => {
 };
 
 const AccessLogTable = ({ data }) => {
-  return <PaginatedAccessLog data={data} />;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <PaginatedAccessLog data={data} />
+    </motion.div>
+  );
 };
 
 export default AccessLogTable;

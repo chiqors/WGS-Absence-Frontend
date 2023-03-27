@@ -1,7 +1,8 @@
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import AccessLogTable from "../../components/AccessLogTable";
-import ErrorLogTable from "../../components/ErrorLogTable";
+import AccessLogTable from "../../components/tables/AccessLogTable";
+import ErrorLogTable from "../../components/tables/ErrorLogTable";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 
 const Log = () => {
@@ -72,8 +73,10 @@ const Log = () => {
           </button>
         </div>
         <div className="flex flex-col mt-4">
-          {tab === "error" && <ErrorLogTable data={tableData} />}
-          {tab === "access" && <AccessLogTable data={tableData} />}
+          <AnimatePresence mode="out-in">
+            {tab === "error" && <ErrorLogTable data={tableData} />}
+            {tab === "access" && <AccessLogTable data={tableData} />}
+          </AnimatePresence>
         </div>
       </div>
     </>
