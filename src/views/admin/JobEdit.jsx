@@ -72,9 +72,7 @@ const JobEdit = () => {
     } else {
       setError(null);
       jobApi.updateJob(id, formData).then((response) => {
-        if (response.status === 200) {
-          navigate("/admin/job");
-        }
+        navigate("/admin/job");
       });
     }
   };

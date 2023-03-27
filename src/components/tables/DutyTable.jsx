@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link, useSearchParams } from "react-router-dom";
-import dutyApi from "../api/duty";
-import helper from "../helper";
-import CircleLoading from "./ui/CircleLoading";
+import dutyApi from "../../api/duty";
+import helper from "../../helper";
+import CircleLoading from "../ui/CircleLoading";
 
 const DutyRow = ({ data }) => {
   return (
@@ -32,7 +32,7 @@ const DutyRow = ({ data }) => {
       <td>
         <Link
           to={`/admin/duty/show/${data.id}`}
-          className="btn btn-sm btn-info mr-2"
+          className="mr-2 btn btn-sm btn-info"
           title="Details"
         >
           <svg
@@ -89,7 +89,7 @@ const SortIcon = ({ column, sort, onSort }) => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-6 h-6 inline-block cursor-pointer"
+      className="inline-block w-6 h-6 cursor-pointer"
       onClick={() => onSort(column)}
     >
       {sortIcon === "asc" ? (
@@ -378,7 +378,7 @@ const PaginatedDuty = ({ data }) => {
         />
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="table table-striped table-hover w-full">
+        <table className="table w-full table-striped table-hover">
           <thead>
             <tr>
               <th>
@@ -437,7 +437,7 @@ const PaginatedDuty = ({ data }) => {
           </tbody>
         </table>
       </div>
-      <div className="flex flex-col justify-center items-center mt-4">
+      <div className="flex flex-col items-center justify-center mt-4">
         <span className="text-sm text-gray-500">
           Showing {currentPage * showPerPage - showPerPage + 1} to{" "}
           {currentPage * showPerPage > totalData

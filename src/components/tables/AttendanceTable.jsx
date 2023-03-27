@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import attendanceApi from "../api/attendance";
-import helper from "../helper.js";
-import CircleLoading from "./ui/CircleLoading";
+import attendanceApi from "../../api/attendance";
+import helper from "../../helper.js";
+import CircleLoading from "../ui/CircleLoading";
 
 const AttendanceRow = ({ attendances, totalEmployees }) => {
   return (

@@ -1,10 +1,12 @@
 // Dependencies & Libraries
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 // Utils
 import { GOOGLE_OAUTH_CLIENT_ID } from "./config.js";
+import Logout from "./utils/Logout";
 import Protected from "./utils/Protected";
 import Redirect from "./utils/Redirect";
 // Layouts
@@ -18,6 +20,7 @@ import Duty from "./views/admin/Duty.jsx";
 import DutyCreate from "./views/admin/DutyCreate.jsx";
 import DutyEdit from "./views/admin/DutyEdit.jsx";
 import DutyShow from "./views/admin/DutyShow.jsx";
+import Employee from "./views/admin/Employee";
 import EmployeeCreate from "./views/admin/EmployeeCreate";
 import EmployeeEdit from "./views/admin/EmployeeEdit";
 import EmployeeShow from "./views/admin/EmployeeShow";
@@ -28,6 +31,7 @@ import JobDutyEdit from "./views/admin/JobDutyEdit.jsx";
 import JobDutyShow from "./views/admin/JobDutyShow.jsx";
 import JobEdit from "./views/admin/JobEdit.jsx";
 import JobShow from "./views/admin/JobShow.jsx";
+import Log from "./views/admin/Log";
 // User Pages
 import Home from "./views/user/Home";
 // Common Pages
@@ -38,14 +42,25 @@ import "./index.css";
 
 const clientId = GOOGLE_OAUTH_CLIENT_ID;
 
-export default function App() {
+const RouterComponent = () => {
+  const location = useLocation();
   return (
-    <BrowserRouter>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Redirect to="/login" />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<Protected element={<AdminLayout />} role="admin" />}>
-          <Route index path="admin/employee" element={<Dashboard />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route
+          element={
+            <Protected
+              element={<AdminLayout location={location} />}
+              role="admin"
+            />
+          }
+        >
+          <Route index path="admin/" element={<Dashboard />} />
+          <Route path="admin/dashboard" element={<Redirect to="/admin" />} />
+          <Route path="admin/employee" element={<Employee />} />
           <Route path="admin/employee/create" element={<EmployeeCreate />} />
           <Route path="admin/employee/show/:id" element={<EmployeeShow />} />
           <Route path="admin/employee/edit/:id" element={<EmployeeEdit />} />
@@ -71,12 +86,30 @@ export default function App() {
           <Route path="admin/duty/create" element={<DutyCreate />} />
           <Route path="admin/duty/show/:id" element={<DutyShow />} />
           <Route path="admin/duty/edit/:id" element={<DutyEdit />} />
+          <Route path="admin/log" element={<Log />} />
         </Route>
-        <Route element={<Protected element={<UserLayout />} role="employee" />}>
+        <Route
+          element={
+            <Protected
+              element={<UserLayout location={location} />}
+              role="employee"
+            />
+          }
+        >
           <Route index path="user/" element={<Home />} />
         </Route>
         <Route path="/404" element={<Error404 />} />
         <Route path="*" element={<Redirect to="/404" />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<RouterComponent />} path="/*" />
       </Routes>
     </BrowserRouter>
   );

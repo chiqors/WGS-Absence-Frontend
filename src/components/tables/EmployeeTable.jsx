@@ -2,18 +2,25 @@ import { useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import employeeApi from "../api/employee";
-import helper from "../helper.js";
+import employeeApi from "../../api/employee";
+import helper from "../../helper.js";
 
 const EmployeeRow = (props) => {
   const handleSubmit = async (e, paramId) => {
     e.preventDefault();
     const checkConfirm = confirm("Are you sure to delete this employee?");
     if (checkConfirm) {
-      const result = await employeeApi.deleteEmployee(paramId);
-      if (result) {
-        props.onDelete(paramId);
-      }
+      // if (result) {
+      //   props.onDelete(paramId);
+      // }
+      await employeeApi
+        .deleteEmployee(paramId)
+        .then((res) => {
+          props.onDelete(paramId);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import employeeApi from "../../api/employee";
-import jobApi from "../../api/job";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
 import helper from "../../helper.js";
@@ -114,7 +113,7 @@ const EmployeeEdit = () => {
   // it is a combination of componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     const fetchJob = async () => {
-      const resJobs = await jobApi.getAllJobs();
+      const resJobs = await employeeApi.getAllJobsForSelectBox();
       const resEmployee = await employeeApi.getEmployeeById(paramsId);
       setJobs(resJobs.data);
       setFormData({

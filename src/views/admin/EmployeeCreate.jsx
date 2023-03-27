@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import employeeApi from "../../api/employee";
-import jobApi from "../../api/job";
 import SentMail from "../../components/SentMail";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 import AdminErrorAlert from "../../components/ui/AdminErrorAlert";
@@ -135,13 +134,6 @@ const EmployeeCreate = () => {
         },
       ]);
     }
-    if (!formData.photo_file && !formData.photo_url) {
-      errors.push([
-        {
-          msg: "Please choose either upload photo or input external photo url",
-        },
-      ]);
-    }
     return errors;
   };
 
@@ -181,15 +173,28 @@ const EmployeeCreate = () => {
     } catch (error) {
       setProcessing(false);
       console.log(error);
-      setErrors(error.response.data.errors);
+      if (error?.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      }
+      if (error?.response?.data?.message) {
+        setErrors([
+          {
+            msg: error.response.data.message,
+          },
+        ]);
+      }
     }
+  };
+
+  const handleCloseError = () => {
+    setErrors([]);
   };
 
   // useEffect Hooks can be used to perform side effects in function components
   // it is a combination of componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     const fetchJob = async () => {
-      const res = await jobApi.getAllJobs();
+      const res = await employeeApi.getAllJobsForSelectBox();
       setJobs(res.data);
     };
     fetchJob();
@@ -213,7 +218,9 @@ const EmployeeCreate = () => {
 
       <AdminLoading loading={processing} />
 
-      {errors.length > 0 ? <AdminErrorAlert error={errors} /> : null}
+      {errors.length > 0 ? (
+        <AdminErrorAlert error={errors} onClose={handleCloseError} />
+      ) : null}
 
       {!success ? (
         <form
@@ -457,7 +464,7 @@ const EmployeeCreate = () => {
           </div>
         </form>
       ) : (
-        <SentMail />
+        <SentMail to="/admin/employee" />
       )}
     </>
   );

@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import DutyTable from "../../components/DutyTable";
+import DutyTable from "../../components/tables/DutyTable";
 import AdminBreadcrumb from "../../components/ui/AdminBreadcrumb";
 
 const Duty = () => {

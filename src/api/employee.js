@@ -5,6 +5,10 @@ const API_URL = `${BACKEND_URL + BACKEND_API_PATH}`;
 // ngrok-skip-browser-warning is a custom header to skip the ngrok browser warning
 axios.defaults.headers.common["ngrok-skip-browser-warning"] = "any value";
 
+const getAllJobsForSelectBox = async () => {
+  return await axios.get(`${API_URL}/employee/getAllJobsForSelectBox`);
+};
+
 const getAllEmployees = async () => {
   return await axios.get(`${API_URL}/employee`);
 };
@@ -14,7 +18,7 @@ const getAllEmployeesByOffsetAndLimit = async (offset, limit) => {
 };
 
 const getEmployeeById = async (id) => {
-  return await axios.get(`${API_URL}/employee/${id}`);
+  return await axios.get(`${API_URL}/employee/show/${id}`);
 };
 
 const createEmployee = async (data) => {
@@ -38,6 +42,7 @@ const deleteEmployee = async (id) => {
 };
 
 export default {
+  getAllJobsForSelectBox,
   getAllEmployees,
   getAllEmployeesByOffsetAndLimit,
   getEmployeeById,

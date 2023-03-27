@@ -5,9 +5,6 @@ const SentMail = ({ to }) => {
 
   return (
     <>
-      {/* info box when employee has been created alongside with email that has been sent. */}
-      {/* there will be a button for going to the another route that was specified with to props */}
-      {/* use tailwindcss or daisyui */}
       <div
         className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-5"
         role="alert"
@@ -18,11 +15,9 @@ const SentMail = ({ to }) => {
           Make sure to check the spam box. Verification link will expire in 24
           hours.
         </p>
-        <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-          <button onClick={() => navigate(to)} className="btn btn-primary">
-            Continue
-          </button>
-        </span>
+        <button onClick={() => navigate(to)} className="btn btn-primary">
+          Continue
+        </button>
       </div>
     </>
   );
