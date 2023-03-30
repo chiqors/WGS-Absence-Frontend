@@ -4,7 +4,7 @@ import authApi from "../api/auth";
 import { getJwtDecoded } from "../utils/AuthGuard";
 import GoogleIcon from "./svg/GoogleIcon";
 
-const GoogleLink = () => {
+const GoogleLink = ({ oauth }) => {
   const [isLinked, setIsLinked] = useState(false);
   const [processing, setProcessing] = useState(false);
   const data = getJwtDecoded();
@@ -31,7 +31,7 @@ const GoogleLink = () => {
   const unlinkGoogleAccount = async () => {
     try {
       const response = await authApi.unlinkGoogleAccount({
-        employee_id: data.employee_id,
+        oauth_id: oauth,
       });
       console.log("Unlink Google account successfully: ", response.data);
       setIsLinked(false);

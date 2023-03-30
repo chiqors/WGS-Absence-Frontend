@@ -17,6 +17,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedDuty, setSelectedDuty] = useState(null);
   const token = localStorage.getItem("token");
   const userData = jwtDecode(token);
 
@@ -46,6 +47,7 @@ const Home = () => {
     });
     if (response.data) {
       setAttendanceStatus(true);
+      setSelectedDuty(response.data.duty);
       if (response.data.time_out) {
         setFinishedAttendance(true);
       }
@@ -59,6 +61,11 @@ const Home = () => {
 
   const fetchCheckIfDutyIsAlreadyAssignedToday = async (duty_id) => {
     const response = await attendanceApi.isDutyAlreadyAssignedToday(duty_id);
+    return response.data;
+  };
+
+  const fetchDutyById = async (duty_id) => {
+    const response = await dutyApi.getDutyById(duty_id);
     return response.data;
   };
 
@@ -103,6 +110,8 @@ const Home = () => {
 
   const handleClockIn = useCallback(async (dutyId, noteIn) => {
     const datetime_in = new Date().toISOString();
+    const getDutyData = await fetchDutyById(dutyId);
+    setSelectedDuty(getDutyData);
     const isDutyAlreadyAssignedToday =
       await fetchCheckIfDutyIsAlreadyAssignedToday(dutyId);
     if (!isDutyAlreadyAssignedToday) {
@@ -160,9 +169,14 @@ const Home = () => {
               {!loading ? (
                 !finishedAttendance ? (
                   !attendanceStatus ? (
-                    <CheckInForm onSubmit={handleClockIn} data={dutyList} />
+                    <>
+                      <CheckInForm onSubmit={handleClockIn} data={dutyList} />
+                    </>
                   ) : (
-                    <CheckOutForm onSubmit={handleClockOut} />
+                    <CheckOutForm
+                      onSubmit={handleClockOut}
+                      data={selectedDuty}
+                    />
                   )
                 ) : (
                   <p className="mb-3 text-base text-gray-500">

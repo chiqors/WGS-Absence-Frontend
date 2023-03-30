@@ -29,7 +29,11 @@ const PrevDutyList = ({ data }) => {
                   <p className="text-sm text-gray-500 truncate">
                     {helper.getHumanReadableDate(attenance.time_in)}
                     {" - "}
-                    {helper.getHumanReadableDate(attenance.time_out)}
+                    {attenance.time_out ? (
+                      helper.getHumanReadableDate(attenance.time_out)
+                    ) : (
+                      <span className="text-red-500">Not clocked out</span>
+                    )}
                   </p>
                 </div>
               ))}

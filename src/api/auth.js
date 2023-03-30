@@ -13,6 +13,10 @@ const doLogin = async (data) => {
   return await axios.post(`${AUTH_URL}/login`, data);
 };
 
+const doLogout = async (data) => {
+  return await axios.post(`${AUTH_URL}/logout`, data);
+};
+
 const doGoogleLogin = async (data) => {
   return await axios.post(`${AUTH_URL}/oauth/google/login`, data);
 };
@@ -32,6 +36,7 @@ const getGoogleOauthAccount = async (employeeId) => {
 export default {
   getAuth,
   doLogin,
+  doLogout,
   doGoogleLogin,
   linkGoogleAccount,
   unlinkGoogleAccount,

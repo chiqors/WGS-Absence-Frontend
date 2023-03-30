@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IoLogOut } from "react-icons/io5";
 import { Link, Outlet } from "react-router-dom";
+import authApi from "../api/auth";
 import employeeApi from "../api/employee";
 import GoogleLink from "../components/GoogleLink";
 import helper from "../helper";
@@ -12,6 +13,12 @@ const UserLayout = ({ location }) => {
   const userData = getJwtDecoded();
   const [employee, setEmployee] = useState({});
   const [timer, setTimer] = useState(null);
+
+  const handleLogout = async () => {
+    await authApi.doLogout({
+      username: userData.username,
+    });
+  };
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -137,12 +144,12 @@ const UserLayout = ({ location }) => {
                 </div>
               </div>
               <div className="mt-0 pt-0">
-                <GoogleLink data={employee} />
+                <GoogleLink oauth={userData.oauth_id} />
               </div>
             </div>
             <div className="divider divide-gray-300 mb-0 pb-0"></div>
             <li className="mb-0 pb-0">
-              <Link to="/logout">
+              <Link to="/logout" onClick={handleLogout}>
                 <IoLogOut className="inline-block w-7 h-7 mr-2" />
                 Logout
               </Link>

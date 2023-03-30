@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const CheckOutForm = ({ onSubmit }) => {
+const CheckOutForm = ({ onSubmit, data }) => {
   const [dutyStatus, setDutyStatus] = useState("");
   const [noteOut, setNoteOut] = useState("");
 
@@ -12,7 +12,7 @@ const CheckOutForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleClockOut}>
       <p className="mb-3 text-base text-gray-500">
-        You have not clocked out yet today.
+        You are currently assigned to <b>{data.name}</b> duty.
       </p>
       {/* select box with duty status */}
       <div className="mb-4">
