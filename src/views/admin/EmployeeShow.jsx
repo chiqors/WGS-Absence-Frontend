@@ -91,7 +91,8 @@ const EmployeeShow = () => {
                   <div className="card-side-image">
                     <div className="card-image h-48 w-48 bg-base-100 rounded-full shadow-xl overflow-hidden">
                       <img
-                        src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg"
+                        src={helper.getAssetPath(employee.photo_url)}
+                        className="object-cover h-full w-full"
                         alt="Album"
                       />
                     </div>

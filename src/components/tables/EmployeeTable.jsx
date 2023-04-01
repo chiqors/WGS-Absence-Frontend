@@ -8,11 +8,11 @@ import helper from "../../helper.js";
 const EmployeeRow = (props) => {
   const handleSubmit = async (e, paramId) => {
     e.preventDefault();
-    const checkConfirm = confirm("Are you sure to delete this employee?");
+    const checkConfirm = confirm("Are you sure to resign this employee?");
     if (checkConfirm) {
       // if (result) {
       //   props.onDelete(paramId);
-      // }
+      // }  
       await employeeApi
         .deleteEmployee(paramId)
         .then((res) => {
@@ -89,7 +89,7 @@ const EmployeeRow = (props) => {
                 <button className="btn btn-info btn-sm">details</button>
               </Link>
               <form onSubmit={(e) => handleSubmit(e, employee.id)}>
-                <button className="btn btn-error btn-sm">delete</button>
+                <button className="btn btn-error btn-sm">resign</button>
               </form>
             </div>
           </th>
