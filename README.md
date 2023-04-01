@@ -19,7 +19,7 @@ You can find the backend [here](https://github.com/chiqors/wgs-absence-backend).
 
 ### About
 
-<img src="https://raw.githubusercontent.com/chiqors/wgs-absence-frontend/main/docs/preview.png" alt="Preview" width="75%">
+![banner](https://raw.githubusercontent.com/chiqors/WGS-Absence-Frontend/master/docs/preview.png)
 
 This is the frontend React app for WGS Absence. It is a web app that allows employers to manage their employees' absences. This was made for my final project in my WGS Bootcamp Batch 5 for about 2 months. If you are looking for the slides, you can download the file named `slides.pptx` in the docs folder. It's all thanks to [WGS](https://www.wgs.co.id) and [Wegeeks](https://wegeeks.co) for giving me the opportunity to learn and grow as a developer and how industries work.
 
