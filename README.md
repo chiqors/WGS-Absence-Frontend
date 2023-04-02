@@ -8,6 +8,7 @@ You can find the backend [here](https://github.com/chiqors/wgs-absence-backend).
 ## Table of Contents
 
 - [About](#about)
+- [Project Management](#project-management)
 - [Getting started](#getting-started)
   - [1. Clone the repository](#1-clone-the-repository)
   - [2. Configure the environment](#2-configure-the-environment)
